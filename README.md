@@ -4,7 +4,9 @@ Contributors:
 	Armand Peron
     Guillaume Doriot
 	Antoine Pelletier
+	Lucie Moulinas
 
 
 
-Votez Sporte Tes Couilles
+Votez Sportue Ninja !
+
