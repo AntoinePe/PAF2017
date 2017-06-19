@@ -2,6 +2,7 @@
 
 Contributors:
 	Armand Peron
+    Guillaume Doriot
 
 
 
