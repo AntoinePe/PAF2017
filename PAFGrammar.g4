@@ -1,9 +1,7 @@
 grammar PAFGrammar;
 
-s : Instructions;
-
 Dollar : '$';
-Number : '-'?[0-9]+;
+Number : [0-9]+;
 fragment String : [A-Za-z0-9]*;
 Variable : [A-Za-z][A-Za-z0-9]*;
 Boolean : 'True' | 'False';
@@ -25,30 +23,33 @@ END : ';';
 EQ : '=';
 INF : '<';
 SUP : '>';
+PLUS : '+';
+MINUS : '-';
+TIMES : '*';
+NEG : '-';
 
-
-
-Instructions : Instruction END
-       | Instruction END Instructions;
-Instruction : If_condition
-       | While_loop
-       | For_loop
-       | Assigning
-       | Operation1;
-Operation1  : Operation2
-       | Operation2 '+' Operation1
-       | Operation2 '-' Operation1;
-Operation2 : Term
-       | Term '*' Operation2;
-Term : LP Operation1 RP
+instructions : instruction END
+       | instruction END instructions;
+instruction : if_condition
+       | while_loop
+       | for_loop
+       | assigning
+       | operation1;
+operation1  : operation2
+       | operation2 PLUS operation1
+       | operation2 MINUS operation1;
+operation2 : term
+       | term TIMES operation2;
+term : LP operation1 RP
        | Number
+       | MINUS Number
        | Variable;
-If_condition : IF LP Condition RP THEN Dollar Instructions Dollar (Else_condition?);
-Else_condition : ELSE LB Instructions RB;
-While_loop : WHILE LP Condition RP Dollar Instructions Dollar;
-Dowhile_loop : DO Dollar Instructions Dollar WHILE LP Condition RP;
-For_loop : FOR LP  Assigning '/' Condition '/' Assigning RP Dollar Instructions Dollar;
-Assigning : Variable EQ Operation1
+if_condition : IF LP condition RP THEN Dollar instructions Dollar (else_condition?);
+else_condition : ELSE LB instructions RB;
+while_loop : WHILE LP condition RP Dollar instructions Dollar;
+dowhile_loop : DO Dollar instructions Dollar WHILE LP condition RP;
+for_loop : FOR LP  assigning '/' condition '/' assigning RP Dollar instructions Dollar;
+assigning : Variable EQ operation1
        | Variable EQ Boolean;
-Condition : Operation1 Operator Operation2
-       | Operation1 Operator Boolean;
+condition : operation1 Operator operation2
+       | operation1 Operator Boolean;
