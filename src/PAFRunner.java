@@ -4,8 +4,9 @@ import org.antlr.v4.runtime.tree.*;
 
 public class PAFRunner {
 
+	@SuppressWarnings("deprecation")
 	public static void main( String[] args) throws Exception {
-		ANTLRInputStream input = new ANTLRInputStream("-3+232*1;2+3;2*3;3-1;");
+		ANTLRInputStream input = new ANTLRInputStream("if(5==5)then$5*3$;");
 		PAFGrammarLexer lexer = new PAFGrammarLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		PAFGrammarParser parser = new PAFGrammarParser(tokens);
