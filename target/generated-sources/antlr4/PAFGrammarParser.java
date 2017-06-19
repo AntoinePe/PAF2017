@@ -469,8 +469,8 @@ public class PAFGrammarParser extends Parser {
 		public TerminalNode Dollar(int i) {
 			return getToken(PAFGrammarParser.Dollar, i);
 		}
-		public Operation1Context operation1() {
-			return getRuleContext(Operation1Context.class,0);
+		public InstructionsContext instructions() {
+			return getRuleContext(InstructionsContext.class,0);
 		}
 		public Else_conditionContext else_condition() {
 			return getRuleContext(Else_conditionContext.class,0);
@@ -509,7 +509,7 @@ public class PAFGrammarParser extends Parser {
 			setState(74);
 			match(Dollar);
 			setState(75);
-			operation1();
+			instructions();
 			setState(76);
 			match(Dollar);
 			{
@@ -936,7 +936,7 @@ public class PAFGrammarParser extends Parser {
 		";\67\3\2\2\2<\t\3\2\2\2=>\7\t\2\2>?\5\6\4\2?@\7\n\2\2@F\3\2\2\2AF\7\34"+
 		"\2\2BC\7\31\2\2CF\7\34\2\2DF\7\35\2\2E=\3\2\2\2EA\3\2\2\2EB\3\2\2\2ED"+
 		"\3\2\2\2F\13\3\2\2\2GH\7\13\2\2HI\7\t\2\2IJ\5\30\r\2JK\7\n\2\2KL\7\20"+
-		"\2\2LM\7\4\2\2MN\5\6\4\2NP\7\4\2\2OQ\5\16\b\2PO\3\2\2\2PQ\3\2\2\2Q\r\3"+
+		"\2\2LM\7\4\2\2MN\5\2\2\2NP\7\4\2\2OQ\5\16\b\2PO\3\2\2\2PQ\3\2\2\2Q\r\3"+
 		"\2\2\2RS\7\f\2\2ST\7\7\2\2TU\5\2\2\2UV\7\b\2\2V\17\3\2\2\2WX\7\r\2\2X"+
 		"Y\7\t\2\2YZ\5\30\r\2Z[\7\n\2\2[\\\7\4\2\2\\]\5\2\2\2]^\7\4\2\2^\21\3\2"+
 		"\2\2_`\7\16\2\2`a\7\4\2\2ab\5\2\2\2bc\7\4\2\2cd\7\r\2\2de\7\t\2\2ef\5"+

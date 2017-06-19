@@ -45,7 +45,7 @@ term : LP operation1 RP
        | Number
        | MINUS Number
        | Variable;
-if_condition : IF LP condition RP THEN Dollar operation1 Dollar (else_condition?);
+if_condition : IF LP condition RP THEN Dollar instructions Dollar (else_condition?);
 else_condition : ELSE LB instructions RB;
 while_loop : WHILE LP condition RP Dollar instructions Dollar;
 dowhile_loop : DO Dollar instructions Dollar WHILE LP condition RP;
