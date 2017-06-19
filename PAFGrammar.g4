@@ -51,5 +51,5 @@ dowhile_loop : DO Dollar instructions Dollar WHILE LP condition RP;
 for_loop : FOR LP  assigning '/' condition '/' assigning RP Dollar instructions Dollar;
 assigning : Variable EQ operation1
        | Variable EQ Boolean;
-condition : operation1 Operator operation2
+condition : operation1 Operator operation1
        | operation1 Operator Boolean;

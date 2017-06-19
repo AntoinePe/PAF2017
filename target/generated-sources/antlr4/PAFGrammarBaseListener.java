@@ -1,6 +1,7 @@
-// Generated from PAFGrammar.g4 by ANTLR 4.7
+// Generated from PAFGrammar.g4 by ANTLR 4.4
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -15,168 +16,168 @@ public class PAFGrammarBaseListener implements PAFGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInstructions(PAFGrammarParser.InstructionsContext ctx) { }
+	@Override public void enterInstructions(@NotNull PAFGrammarParser.InstructionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInstructions(PAFGrammarParser.InstructionsContext ctx) { }
+	@Override public void exitInstructions(@NotNull PAFGrammarParser.InstructionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInstruction(PAFGrammarParser.InstructionContext ctx) { }
+	@Override public void enterCondition(@NotNull PAFGrammarParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInstruction(PAFGrammarParser.InstructionContext ctx) { }
+	@Override public void exitCondition(@NotNull PAFGrammarParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperation1(PAFGrammarParser.Operation1Context ctx) { }
+	@Override public void enterOperation2(@NotNull PAFGrammarParser.Operation2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperation1(PAFGrammarParser.Operation1Context ctx) { }
+	@Override public void exitOperation2(@NotNull PAFGrammarParser.Operation2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperation2(PAFGrammarParser.Operation2Context ctx) { }
+	@Override public void enterOperation1(@NotNull PAFGrammarParser.Operation1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperation2(PAFGrammarParser.Operation2Context ctx) { }
+	@Override public void exitOperation1(@NotNull PAFGrammarParser.Operation1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTerm(PAFGrammarParser.TermContext ctx) { }
+	@Override public void enterInstruction(@NotNull PAFGrammarParser.InstructionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTerm(PAFGrammarParser.TermContext ctx) { }
+	@Override public void exitInstruction(@NotNull PAFGrammarParser.InstructionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIf_condition(PAFGrammarParser.If_conditionContext ctx) { }
+	@Override public void enterWhile_loop(@NotNull PAFGrammarParser.While_loopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIf_condition(PAFGrammarParser.If_conditionContext ctx) { }
+	@Override public void exitWhile_loop(@NotNull PAFGrammarParser.While_loopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElse_condition(PAFGrammarParser.Else_conditionContext ctx) { }
+	@Override public void enterTerm(@NotNull PAFGrammarParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElse_condition(PAFGrammarParser.Else_conditionContext ctx) { }
+	@Override public void exitTerm(@NotNull PAFGrammarParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhile_loop(PAFGrammarParser.While_loopContext ctx) { }
+	@Override public void enterFor_loop(@NotNull PAFGrammarParser.For_loopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhile_loop(PAFGrammarParser.While_loopContext ctx) { }
+	@Override public void exitFor_loop(@NotNull PAFGrammarParser.For_loopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDowhile_loop(PAFGrammarParser.Dowhile_loopContext ctx) { }
+	@Override public void enterElse_condition(@NotNull PAFGrammarParser.Else_conditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDowhile_loop(PAFGrammarParser.Dowhile_loopContext ctx) { }
+	@Override public void exitElse_condition(@NotNull PAFGrammarParser.Else_conditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFor_loop(PAFGrammarParser.For_loopContext ctx) { }
+	@Override public void enterAssigning(@NotNull PAFGrammarParser.AssigningContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFor_loop(PAFGrammarParser.For_loopContext ctx) { }
+	@Override public void exitAssigning(@NotNull PAFGrammarParser.AssigningContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssigning(PAFGrammarParser.AssigningContext ctx) { }
+	@Override public void enterIf_condition(@NotNull PAFGrammarParser.If_conditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssigning(PAFGrammarParser.AssigningContext ctx) { }
+	@Override public void exitIf_condition(@NotNull PAFGrammarParser.If_conditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCondition(PAFGrammarParser.ConditionContext ctx) { }
+	@Override public void enterDowhile_loop(@NotNull PAFGrammarParser.Dowhile_loopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCondition(PAFGrammarParser.ConditionContext ctx) { }
+	@Override public void exitDowhile_loop(@NotNull PAFGrammarParser.Dowhile_loopContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEveryRule(ParserRuleContext ctx) { }
+	@Override public void enterEveryRule(@NotNull ParserRuleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEveryRule(ParserRuleContext ctx) { }
+	@Override public void exitEveryRule(@NotNull ParserRuleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void visitTerminal(TerminalNode node) { }
+	@Override public void visitTerminal(@NotNull TerminalNode node) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void visitErrorNode(ErrorNode node) { }
+	@Override public void visitErrorNode(@NotNull ErrorNode node) { }
 }
