@@ -18,30 +18,30 @@ operation1 returns [Operation op]:
 	| d=operation2 m=MINUS e=operation1 {$op=new Operation(new Operation($d.op),new Operation($e.op),$m.text);};
 	
 operation2 returns [Operation op]:
-	a=term {$op=new Operation($a.term);}
-	| b=term t=TIMES c=operation2 {$op=new Operation(new Term($b.term),new Operation($c.op),$t.text);};
+	a=term {$op=new Operation($a.tm);}
+	| b=term t=TIMES c=operation2 {$op=new Operation(new Term($b.tm),new Operation($c.op),$t.text);};
 	
-term returns [Term term]:
-	lp=LP a=operation1 rp=RP {$term=new Term(new Operation($a.op),$lp.text,$rp.text);}
-	| n=Number {$term=new Term($n.text);}
-	| m=MINUS n=Number {$term=new Term($n.text,$m.text);}
-	| v=Variable {$term=new Term($v.text);};
+term returns [Term tm]:
+	lp=LP a=operation1 rp=RP {$tm=new Term(new Operation($a.op),$lp.text,$rp.text);}
+	| n=Number {$tm=new Term($n.text);}
+	| m=MINUS n=Number {$tm=new Term($n.text,$m.text);}
+	| v=Variable {$tm=new Term($v.text);};
 	
 if_condition returns [Condition cond]:
-	IF WS* LP WS* a=bool WS* RP WS THEN WS* Dollar b=instructions WS* Dollar {$cond=new Condition(new Bool($a.value),new Instructions($b.instrs));}
-	| IF WS* LP WS* c=bool WS* RP WS THEN WS* Dollar d=instructions WS* Dollar e=else_condition  {$cond=new Condition(new Bool($c.value),new Instructions($d.instrs),new Condition($e.cond));};
+	IF LP a=bool RP THEN Dollar b=instructions Dollar {$cond=new Condition(new Bool($a.value),new Instructions($b.instrs));}
+	| IF LP c=bool RP THEN Dollar d=instructions Dollar e=else_condition  {$cond=new Condition(new Bool($c.value),new Instructions($d.instrs),new Condition($e.cond));};
 
 else_condition returns [Condition cond]:
-	ELSE WS* LB WS* a=instructions WS RB {$cond=new Condition(new Instructions($a.instrs));};
+	ELSE LB a=instructions RB {$cond=new Condition(new Instructions($a.instrs));};
 	
 while_loop returns [While_loop while]:
-	WHILE WS* LP WS* a=bool WS* RP WS Dollar b=instructions WS* Dollar {$while=new While_loop(new Bool($a.value),new Instructions($b.instrs));};
+	WHILE LP a=bool RP Dollar b=instructions Dollar {$while=new While_loop(new Bool($a.value),new Instructions($b.instrs));};
 	
 dowhile_loop returns [Dowhile_loop dowhile]:
-	DO WS Dollar WS* a=instructions WS* Dollar WHILE WS* LP WS* b=bool WS* RP {$dowhile=new Dowhile_loop(new Bool($b.value),new Instructions($a.instrs));};
+	DO Dollar a=instructions Dollar WHILE LP b=bool RP {$dowhile=new Dowhile_loop(new Bool($b.value),new Instructions($a.instrs));};
 
 for_loop returns [For_loop for]:
-	FOR WS* LP WS* a=assigning WS '/' WS b=bool WS '/' WS c=Number WS* RP Dollar d=instructions WS* Dollar {$for=new For_loop(new Bool($b.value),new Assigning($a.var),$c.text,new Instructions($d.instrs));};
+	FOR LP a=assigning '/' b=bool '/' c=Number RP Dollar d=instructions Dollar {$for=new For_loop(new Bool($b.value),new Assigning($a.var),$c.text,new Instructions($d.instrs));};
 
 assigning returns [Assigning var]:
 	a=Variable EQ b=operation1 {$var=new Assigning($a.text,new Operation($b.op));}
@@ -50,7 +50,7 @@ assigning returns [Assigning var]:
 bool returns [Bool value]:
 	a=Boolean {$value=new Bool($a.text);}
 	| b=operation1 c=Operator d=operation1 {$value=new Bool(new Operation($b.op),new Operation($d.op),$c.text);}
-	| e=Variable f=Operator g=Boolean {$value=new Bool($e.text,$d.text,$f.text);}; 
+	| e=Variable f=Operator g=operation1 {$value=new Bool($e.text,new Operation($g.op),$f.text);}; 
 
 Dollar : '$';
 Number : [0-9]+;
