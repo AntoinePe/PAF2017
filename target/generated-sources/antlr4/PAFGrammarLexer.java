@@ -1,4 +1,4 @@
-// Generated from PAFGrammar.g4 by ANTLR 4.4
+// Generated from PAFGrammar.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class PAFGrammarLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -20,22 +20,62 @@ public class PAFGrammarLexer extends Lexer {
 		LP=9, RP=10, IF=11, ELSE=12, WHILE=13, DO=14, FOR=15, THEN=16, AND=17, 
 		OR=18, NOT=19, END=20, EQ=21, INF=22, SUP=23, PLUS=24, MINUS=25, TIMES=26, 
 		NEG=27;
+	public static String[] channelNames = {
+		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
+	};
+
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
 
-	public static final String[] tokenNames = {
-		"'\\u0000'", "'\\u0001'", "'\\u0002'", "'\\u0003'", "'\\u0004'", "'\\u0005'", 
-		"'\\u0006'", "'\\u0007'", "'\b'", "'\t'", "'\n'", "'\\u000B'", "'\f'", 
-		"'\r'", "'\\u000E'", "'\\u000F'", "'\\u0010'", "'\\u0011'", "'\\u0012'", 
-		"'\\u0013'", "'\\u0014'", "'\\u0015'", "'\\u0016'", "'\\u0017'", "'\\u0018'", 
-		"'\\u0019'", "'\\u001A'", "'\\u001B'"
-	};
 	public static final String[] ruleNames = {
 		"T__0", "Dollar", "Number", "String", "Variable", "Boolean", "Operator", 
 		"LB", "RB", "LP", "RP", "IF", "ELSE", "WHILE", "DO", "FOR", "THEN", "AND", 
 		"OR", "NOT", "END", "EQ", "INF", "SUP", "PLUS", "MINUS", "TIMES", "NEG"
 	};
+
+	private static final String[] _LITERAL_NAMES = {
+		null, "'/'", "'$'", null, null, null, null, "'['", "']'", "'('", "')'", 
+		"'if'", "'else'", "'while'", "'do'", "'for'", "'then'", "'&'", "'||'", 
+		"'!'", "';'", "'='", "'<'", "'>'", "'+'", null, "'*'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, null, "Dollar", "Number", "Variable", "Boolean", "Operator", "LB", 
+		"RB", "LP", "RP", "IF", "ELSE", "WHILE", "DO", "FOR", "THEN", "AND", "OR", 
+		"NOT", "END", "EQ", "INF", "SUP", "PLUS", "MINUS", "TIMES", "NEG"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
 
 
 	public PAFGrammarLexer(CharStream input) {
@@ -47,13 +87,13 @@ public class PAFGrammarLexer extends Lexer {
 	public String getGrammarFileName() { return "PAFGrammar.g4"; }
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
-
-	@Override
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override
 	public String getSerializedATN() { return _serializedATN; }
+
+	@Override
+	public String[] getChannelNames() { return channelNames; }
 
 	@Override
 	public String[] getModeNames() { return modeNames; }
@@ -62,7 +102,7 @@ public class PAFGrammarLexer extends Lexer {
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\35\u00a5\b\1\4\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\35\u00a5\b\1\4\2"+
 		"\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4"+
 		"\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22"+
 		"\t\22\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31"+
@@ -76,8 +116,8 @@ public class PAFGrammarLexer extends Lexer {
 		"\31\3\32\3\32\3\33\3\33\3\34\3\34\3\35\3\35\2\2\36\3\3\5\4\7\5\t\2\13"+
 		"\6\r\7\17\b\21\t\23\n\25\13\27\f\31\r\33\16\35\17\37\20!\21#\22%\23\'"+
 		"\24)\25+\26-\27/\30\61\31\63\32\65\33\67\349\35\3\2\5\3\2\62;\5\2\62;"+
-		"C\\c|\4\2C\\c|\u00ac\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\13\3\2\2\2"+
-		"\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27"+
+		"C\\c|\4\2C\\c|\2\u00ac\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\13\3\2\2"+
+		"\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27"+
 		"\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2\2\37\3\2\2\2\2!\3\2\2"+
 		"\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2\2+\3\2\2\2\2-\3\2\2\2"+
 		"\2/\3\2\2\2\2\61\3\2\2\2\2\63\3\2\2\2\2\65\3\2\2\2\2\67\3\2\2\2\29\3\2"+
