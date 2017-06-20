@@ -13,7 +13,7 @@ instruction returns [Instruction instr]:
 	| f=operation1 {$instr=new Instruction($f.op);};
 	
 operation1 returns [Operation op]:
-	a=operation2 {$op=new Operation($a.op);}
+	a=operation2 {$op=$a.op;}
 	| b=operation2 p=PLUS c=operation1 {$op=new Operation($b.op,$c.op,$p.text);}
 	| d=operation2 m=MINUS e=operation1 {$op=new Operation($d.op,$e.op,$m.text);};
 	
@@ -53,7 +53,6 @@ bool returns [Bool value]:
 	| e=Variable f=Operator g=operation1 {$value=new Bool(new Variable($e.text),$g.op,$f.text);}; 
 
 Dollar : '$';
-Number : [0-9]+;
 Boolean : 'True' | 'False';
 Operator : EQ EQ | NOT EQ | INF | INF EQ | SUP | SUP EQ;
 LB : '[';
@@ -77,4 +76,10 @@ PLUS : '+';
 MINUS : '-';
 TIMES : '*';
 Variable : [A-Za-z][A-Za-z0-9]*;
-WS : [ \t\r\n]+ -> skip ;
+Number : [0-9]+;
+WS  :   ( ' '
+        | '\t'
+        | '\r'
+        | '\n'
+        ) -> skip
+    ;

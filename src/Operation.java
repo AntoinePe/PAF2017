@@ -6,18 +6,6 @@ public class Operation {
 	private String op;
 	private Term term;
 	
-	public Operation(Operation operation) {
-		if (term == null) {
-			this.term1 = operation.getTerm1();
-			this.term2 = operation.getTerm2();
-			this.op = operation.getOp();
-		} else {
-			this.term = operation.getTerm();
-			this.term2 = operation.getTerm2();
-			this.op = operation.getOp();
-		} 
-	}
-	
 	public Operation(Operation term1, Operation term2, String op) {
 		this.term1 = term1;
 		this.term2 = term2;

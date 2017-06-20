@@ -16,11 +16,6 @@ public class Assigning {
 	}
  
 	public String toString() {
-		if (op!=null) {
-			return var.toString() + "=" + op.toString() ;
-		}
-		else {
-			return var.toString() + "=" + bool.toString() ;
-		}
+		return var.toString() + " = " + ((op!=null) ? op.toString() : bool.toString());
 	}
 }

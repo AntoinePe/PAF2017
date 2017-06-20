@@ -24,9 +24,9 @@ public class Bool {
 	
 	public String toString(){
 		if (op1 != null)
-			return this.op1.toString() + this.operator + this.op2.toString();
+			return this.op1.toString() + " " + this.operator + " " + this.op2.toString();
 		else if (variable != null)
-			return variable.toString() + operator + op2.toString();
+			return variable.toString() + " " + operator + " " + op2.toString();
 		else
 			return this.value ? "True" : "False";
 	} 
