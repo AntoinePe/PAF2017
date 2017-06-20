@@ -24,4 +24,16 @@ public class Term {
 		this.variable = variable;
 	}
 	
+	public String toString() {
+		if (lp != null && rp != null)
+			return lp + var.toString() + rp;
+		else if (variable != null)
+			return variable.toString();
+		else
+			return Integer.toString(number);
+	}
+	
+	public String toAsm() {
+		return null;
+	}
 }

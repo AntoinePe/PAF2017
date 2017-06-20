@@ -1,56 +1,56 @@
 grammar PAFGrammar;
 
 instructions returns [Instructions instrs]:
-	a=instruction END {$instrs=new Instructions(new Instruction($a.instr));}
-	| b=instruction END c=instructions {$instrs=new Instructions(new Instruction($b.instr),new Instructions($c.instrs));};
+	a=instruction END {$instrs=new Instructions($a.instr);}
+	| b=instruction END c=instructions {$instrs=new Instructions($b.instr,$c.instrs);};
 	
 instruction returns [Instruction instr]:
-	a=if_condition {$instr=new Instruction(new Condition($a.cond));}
-	| b=for_loop {$instr=new Instruction(new For_loop($b.for);}
-	| c=while_loop {$instr=new Instruction(new While_loop($c.while));}
-	| d=dowhile_loop {$instr=new Instruction(new Dowhile_loop($d.dowhile));}
-	| e=assigning {$instr=new Instruction(new Assigning($e.var));}
-	| f=operation1 {$instr=new Instruction(new Operation($f.op));};
+	a=if_condition {$instr=new Instruction($a.cond);}
+	| b=for_loop {$instr=new Instruction($b.forLoop);}
+	| c=while_loop {$instr=new Instruction($c.whileLoop);}
+	| d=dowhile_loop {$instr=new Instruction($d.dowhileLoop);}
+	| e=assigning {$instr=new Instruction($e.var);}
+	| f=operation1 {$instr=new Instruction($f.op);};
 	
 operation1 returns [Operation op]:
 	a=operation2 {$op=new Operation($a.op);}
-	| b=operation2 p=PLUS c=operation1 {$op=new Operation(new Operation($b.op),new Operation($c.op),$p.text);}
-	| d=operation2 m=MINUS e=operation1 {$op=new Operation(new Operation($d.op),new Operation($e.op),$m.text);};
+	| b=operation2 p=PLUS c=operation1 {$op=new Operation($b.op,$c.op,$p.text);}
+	| d=operation2 m=MINUS e=operation1 {$op=new Operation($d.op,$e.op,$m.text);};
 	
 operation2 returns [Operation op]:
 	a=term {$op=new Operation($a.tm);}
-	| b=term t=TIMES c=operation2 {$op=new Operation(new Term($b.tm),new Operation($c.op),$t.text);};
+	| b=term t=TIMES c=operation2 {$op=new Operation($b.tm,$c.op,$t.text);};
 	
 term returns [Term tm]:
-	lp=LP a=operation1 rp=RP {$tm=new Term(new Operation($a.op),$lp.text,$rp.text);}
+	lp=LP a=operation1 rp=RP {$tm=new Term($a.op,$lp.text,$rp.text);}
 	| n=Number {$tm=new Term($n.text);}
 	| m=MINUS n=Number {$tm=new Term($n.text,$m.text);}
 	| v=Variable {$tm=new Term(new Variable($v.text));};
 	
 if_condition returns [Condition cond]:
-	IF LP a=bool RP THEN Dollar b=instructions Dollar {$cond=new Condition(new Bool($a.value),new Instructions($b.instrs));}
-	| IF LP c=bool RP THEN Dollar d=instructions Dollar e=else_condition  {$cond=new Condition(new Bool($c.value),new Instructions($d.instrs),new Condition($e.cond));};
+	IF LP a=bool RP THEN Dollar b=instructions Dollar {$cond=new Condition($a.value,$b.instrs);}
+	| IF LP c=bool RP THEN Dollar d=instructions Dollar e=else_condition  {$cond=new Condition($c.value,$d.instrs,$e.cond);};
 
 else_condition returns [Condition cond]:
-	ELSE LB a=instructions RB {$cond=new Condition(new Instructions($a.instrs));};
+	ELSE LB a=instructions RB {$cond=new Condition($a.instrs);};
 	
-while_loop returns [While_loop while]:
-	WHILE LP a=bool RP Dollar b=instructions Dollar {$while=new While_loop(new Bool($a.value),new Instructions($b.instrs));};
+while_loop returns [While_loop whileLoop]:
+	WHILE LP a=bool RP Dollar b=instructions Dollar {$whileLoop=new While_loop($a.value,$b.instrs);};
 	
-dowhile_loop returns [Dowhile_loop dowhile]:
-	DO Dollar a=instructions Dollar WHILE LP b=bool RP {$dowhile=new Dowhile_loop(new Bool($b.value),new Instructions($a.instrs));};
+dowhile_loop returns [Dowhile_loop dowhileLoop]:
+	DO Dollar a=instructions Dollar WHILE LP b=bool RP {$dowhileLoop=new Dowhile_loop($b.value,$a.instrs);};
 
-for_loop returns [For_loop for]:
-	FOR LP a=assigning '/' b=bool '/' c=Number RP Dollar d=instructions Dollar {$for=new For_loop(new Bool($b.value),new Assigning($a.var),$c.text,new Instructions($d.instrs));};
+for_loop returns [For_loop forLoop]:
+	FOR LP a=assigning '/' b=bool '/' c=Number RP Dollar d=instructions Dollar {$forLoop=new For_loop($b.value,$a.var,$c.text,$d.instrs);};
 
 assigning returns [Assigning var]:
-	a=Variable EQ b=operation1 {$var=new Assigning(new Variable($a.text),new Operation($b.op));}
-	| c=Variable EQ d=bool {$var=new Assigning(new Variable($c.text),new Bool($d.value));};
+	a=Variable EQ b=operation1 {$var=new Assigning(new Variable($a.text),$b.op);}
+	| c=Variable EQ d=bool {$var=new Assigning(new Variable($c.text),$d.value);};
 
 bool returns [Bool value]:
 	a=Boolean {$value=new Bool($a.text);}
-	| b=operation1 c=Operator d=operation1 {$value=new Bool(new Operation($b.op),new Operation($d.op),$c.text);}
-	| e=Variable f=Operator g=operation1 {$value=new Bool(new Variable($e.text),new Operation($g.op),$f.text);}; 
+	| b=operation1 c=Operator d=operation1 {$value=new Bool($b.op,$d.op,$c.text);}
+	| e=Variable f=Operator g=operation1 {$value=new Bool(new Variable($e.text),$g.op,$f.text);}; 
 
 Dollar : '$';
 Number : [0-9]+;

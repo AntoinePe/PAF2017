@@ -12,5 +12,16 @@ public class Instructions {
 	public Instructions(Instruction instr) {
 		this(instr,null);
 	}
+	
+	public String toString() {
+		if (instrs == null)
+			return instr.toString() + ";";
+		else
+			return instr.toString() + ";\n" + instrs.toString();
+	}
+	
+	public String toAsm() {
+		return null;
+	}
 
 }

@@ -31,5 +31,22 @@ public class Instruction {
 	public Instruction(Operation op) {
 		this.op = op;
 	}
+	
+	public String toString() {
+		if (cond != null)
+			return cond.toString();
+		else if (forLoop != null)
+			return forLoop.toString();
+		else if (whileLoop != null)
+			return whileLoop.toString();
+		else if (var != null) 
+			return var.toString();
+		else
+			return op.toString();
+	}
+	
+	public String toAsm() {
+		return null;
+	}
 
 }

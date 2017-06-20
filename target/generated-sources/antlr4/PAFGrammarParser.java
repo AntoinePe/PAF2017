@@ -129,7 +129,7 @@ public class PAFGrammarParser extends Parser {
 				((InstructionsContext)_localctx).a = instruction();
 				setState(25);
 				match(END);
-				((InstructionsContext)_localctx).instrs = new Instructions(new Instruction(((InstructionsContext)_localctx).a.instr));
+				((InstructionsContext)_localctx).instrs = new Instructions(((InstructionsContext)_localctx).a.instr);
 				}
 				break;
 			case 2:
@@ -141,7 +141,7 @@ public class PAFGrammarParser extends Parser {
 				match(END);
 				setState(30);
 				((InstructionsContext)_localctx).c = instructions();
-				((InstructionsContext)_localctx).instrs = new Instructions(new Instruction(((InstructionsContext)_localctx).b.instr),new Instructions(((InstructionsContext)_localctx).c.instrs));
+				((InstructionsContext)_localctx).instrs = new Instructions(((InstructionsContext)_localctx).b.instr,((InstructionsContext)_localctx).c.instrs);
 				}
 				break;
 			}
@@ -209,7 +209,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(35);
 				((InstructionContext)_localctx).a = if_condition();
-				((InstructionContext)_localctx).instr = new Instruction(new Condition(((InstructionContext)_localctx).a.cond));
+				((InstructionContext)_localctx).instr = new Instruction(((InstructionContext)_localctx).a.cond);
 				}
 				break;
 			case 2:
@@ -217,7 +217,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(38);
 				((InstructionContext)_localctx).b = for_loop();
-				((InstructionContext)_localctx).instr = new Instruction(new For_loop(((InstructionContext)_localctx).b.for);
+				((InstructionContext)_localctx).instr = new Instruction(((InstructionContext)_localctx).b.forLoop);
 				}
 				break;
 			case 3:
@@ -225,7 +225,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(41);
 				((InstructionContext)_localctx).c = while_loop();
-				((InstructionContext)_localctx).instr = new Instruction(new While_loop(((InstructionContext)_localctx).c.while));
+				((InstructionContext)_localctx).instr = new Instruction(((InstructionContext)_localctx).c.whileLoop);
 				}
 				break;
 			case 4:
@@ -233,7 +233,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(44);
 				((InstructionContext)_localctx).d = dowhile_loop();
-				((InstructionContext)_localctx).instr = new Instruction(new Dowhile_loop(((InstructionContext)_localctx).d.dowhile));
+				((InstructionContext)_localctx).instr = new Instruction(((InstructionContext)_localctx).d.dowhileLoop);
 				}
 				break;
 			case 5:
@@ -241,7 +241,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(47);
 				((InstructionContext)_localctx).e = assigning();
-				((InstructionContext)_localctx).instr = new Instruction(new Assigning(((InstructionContext)_localctx).e.var));
+				((InstructionContext)_localctx).instr = new Instruction(((InstructionContext)_localctx).e.var);
 				}
 				break;
 			case 6:
@@ -249,7 +249,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(50);
 				((InstructionContext)_localctx).f = operation1();
-				((InstructionContext)_localctx).instr = new Instruction(new Operation(((InstructionContext)_localctx).f.op));
+				((InstructionContext)_localctx).instr = new Instruction(((InstructionContext)_localctx).f.op);
 				}
 				break;
 			}
@@ -320,7 +320,7 @@ public class PAFGrammarParser extends Parser {
 				((Operation1Context)_localctx).p = match(PLUS);
 				setState(60);
 				((Operation1Context)_localctx).c = operation1();
-				((Operation1Context)_localctx).op = new Operation(new Operation(((Operation1Context)_localctx).b.op),new Operation(((Operation1Context)_localctx).c.op),(((Operation1Context)_localctx).p!=null?((Operation1Context)_localctx).p.getText():null));
+				((Operation1Context)_localctx).op = new Operation(((Operation1Context)_localctx).b.op,((Operation1Context)_localctx).c.op,(((Operation1Context)_localctx).p!=null?((Operation1Context)_localctx).p.getText():null));
 				}
 				break;
 			case 3:
@@ -332,7 +332,7 @@ public class PAFGrammarParser extends Parser {
 				((Operation1Context)_localctx).m = match(MINUS);
 				setState(65);
 				((Operation1Context)_localctx).e = operation1();
-				((Operation1Context)_localctx).op = new Operation(new Operation(((Operation1Context)_localctx).d.op),new Operation(((Operation1Context)_localctx).e.op),(((Operation1Context)_localctx).m!=null?((Operation1Context)_localctx).m.getText():null));
+				((Operation1Context)_localctx).op = new Operation(((Operation1Context)_localctx).d.op,((Operation1Context)_localctx).e.op,(((Operation1Context)_localctx).m!=null?((Operation1Context)_localctx).m.getText():null));
 				}
 				break;
 			}
@@ -399,7 +399,7 @@ public class PAFGrammarParser extends Parser {
 				((Operation2Context)_localctx).t = match(TIMES);
 				setState(75);
 				((Operation2Context)_localctx).c = operation2();
-				((Operation2Context)_localctx).op = new Operation(new Term(((Operation2Context)_localctx).b.tm),new Operation(((Operation2Context)_localctx).c.op),(((Operation2Context)_localctx).t!=null?((Operation2Context)_localctx).t.getText():null));
+				((Operation2Context)_localctx).op = new Operation(((Operation2Context)_localctx).b.tm,((Operation2Context)_localctx).c.op,(((Operation2Context)_localctx).t!=null?((Operation2Context)_localctx).t.getText():null));
 				}
 				break;
 			}
@@ -461,7 +461,7 @@ public class PAFGrammarParser extends Parser {
 				((TermContext)_localctx).a = operation1();
 				setState(82);
 				((TermContext)_localctx).rp = match(RP);
-				((TermContext)_localctx).tm = new Term(new Operation(((TermContext)_localctx).a.op),(((TermContext)_localctx).lp!=null?((TermContext)_localctx).lp.getText():null),(((TermContext)_localctx).rp!=null?((TermContext)_localctx).rp.getText():null));
+				((TermContext)_localctx).tm = new Term(((TermContext)_localctx).a.op,(((TermContext)_localctx).lp!=null?((TermContext)_localctx).lp.getText():null),(((TermContext)_localctx).rp!=null?((TermContext)_localctx).rp.getText():null));
 				}
 				break;
 			case Number:
@@ -569,7 +569,7 @@ public class PAFGrammarParser extends Parser {
 				((If_conditionContext)_localctx).b = instructions();
 				setState(101);
 				match(Dollar);
-				((If_conditionContext)_localctx).cond = new Condition(new Bool(((If_conditionContext)_localctx).a.value),new Instructions(((If_conditionContext)_localctx).b.instrs));
+				((If_conditionContext)_localctx).cond = new Condition(((If_conditionContext)_localctx).a.value,((If_conditionContext)_localctx).b.instrs);
 				}
 				break;
 			case 2:
@@ -593,7 +593,7 @@ public class PAFGrammarParser extends Parser {
 				match(Dollar);
 				setState(112);
 				((If_conditionContext)_localctx).e = else_condition();
-				((If_conditionContext)_localctx).cond = new Condition(new Bool(((If_conditionContext)_localctx).c.value),new Instructions(((If_conditionContext)_localctx).d.instrs),new Condition(((If_conditionContext)_localctx).e.cond));
+				((If_conditionContext)_localctx).cond = new Condition(((If_conditionContext)_localctx).c.value,((If_conditionContext)_localctx).d.instrs,((If_conditionContext)_localctx).e.cond);
 				}
 				break;
 			}
@@ -646,7 +646,7 @@ public class PAFGrammarParser extends Parser {
 			((Else_conditionContext)_localctx).a = instructions();
 			setState(120);
 			match(RB);
-			((Else_conditionContext)_localctx).cond = new Condition(new Instructions(((Else_conditionContext)_localctx).a.instrs));
+			((Else_conditionContext)_localctx).cond = new Condition(((Else_conditionContext)_localctx).a.instrs);
 			}
 		}
 		catch (RecognitionException re) {
@@ -661,7 +661,7 @@ public class PAFGrammarParser extends Parser {
 	}
 
 	public static class While_loopContext extends ParserRuleContext {
-		public While_loop while;
+		public While_loop whileLoop;
 		public BoolContext a;
 		public InstructionsContext b;
 		public TerminalNode WHILE() { return getToken(PAFGrammarParser.WHILE, 0); }
@@ -711,7 +711,7 @@ public class PAFGrammarParser extends Parser {
 			((While_loopContext)_localctx).b = instructions();
 			setState(129);
 			match(Dollar);
-			((While_loopContext)_localctx).while = new While_loop(new Bool(((While_loopContext)_localctx).a.value),new Instructions(((While_loopContext)_localctx).b.instrs));
+			((While_loopContext)_localctx).whileLoop = new While_loop(((While_loopContext)_localctx).a.value,((While_loopContext)_localctx).b.instrs);
 			}
 		}
 		catch (RecognitionException re) {
@@ -726,7 +726,7 @@ public class PAFGrammarParser extends Parser {
 	}
 
 	public static class Dowhile_loopContext extends ParserRuleContext {
-		public Dowhile_loop dowhile;
+		public Dowhile_loop dowhileLoop;
 		public InstructionsContext a;
 		public BoolContext b;
 		public TerminalNode DO() { return getToken(PAFGrammarParser.DO, 0); }
@@ -779,7 +779,7 @@ public class PAFGrammarParser extends Parser {
 			((Dowhile_loopContext)_localctx).b = bool();
 			setState(139);
 			match(RP);
-			((Dowhile_loopContext)_localctx).dowhile = new Dowhile_loop(new Bool(((Dowhile_loopContext)_localctx).b.value),new Instructions(((Dowhile_loopContext)_localctx).a.instrs));
+			((Dowhile_loopContext)_localctx).dowhileLoop = new Dowhile_loop(((Dowhile_loopContext)_localctx).b.value,((Dowhile_loopContext)_localctx).a.instrs);
 			}
 		}
 		catch (RecognitionException re) {
@@ -794,7 +794,7 @@ public class PAFGrammarParser extends Parser {
 	}
 
 	public static class For_loopContext extends ParserRuleContext {
-		public For_loop for;
+		public For_loop forLoop;
 		public AssigningContext a;
 		public BoolContext b;
 		public Token c;
@@ -858,7 +858,7 @@ public class PAFGrammarParser extends Parser {
 			((For_loopContext)_localctx).d = instructions();
 			setState(152);
 			match(Dollar);
-			((For_loopContext)_localctx).for = new For_loop(new Bool(((For_loopContext)_localctx).b.value),new Assigning(((For_loopContext)_localctx).a.var),(((For_loopContext)_localctx).c!=null?((For_loopContext)_localctx).c.getText():null),new Instructions(((For_loopContext)_localctx).d.instrs));
+			((For_loopContext)_localctx).forLoop = new For_loop(((For_loopContext)_localctx).b.value,((For_loopContext)_localctx).a.var,(((For_loopContext)_localctx).c!=null?((For_loopContext)_localctx).c.getText():null),((For_loopContext)_localctx).d.instrs);
 			}
 		}
 		catch (RecognitionException re) {
@@ -916,7 +916,7 @@ public class PAFGrammarParser extends Parser {
 				match(EQ);
 				setState(157);
 				((AssigningContext)_localctx).b = operation1();
-				((AssigningContext)_localctx).var = new Assigning(new Variable((((AssigningContext)_localctx).a!=null?((AssigningContext)_localctx).a.getText():null)),new Operation(((AssigningContext)_localctx).b.op));
+				((AssigningContext)_localctx).var = new Assigning(new Variable((((AssigningContext)_localctx).a!=null?((AssigningContext)_localctx).a.getText():null)),((AssigningContext)_localctx).b.op);
 				}
 				break;
 			case 2:
@@ -928,7 +928,7 @@ public class PAFGrammarParser extends Parser {
 				match(EQ);
 				setState(162);
 				((AssigningContext)_localctx).d = bool();
-				((AssigningContext)_localctx).var = new Assigning(new Variable((((AssigningContext)_localctx).c!=null?((AssigningContext)_localctx).c.getText():null)),new Bool(((AssigningContext)_localctx).d.value));
+				((AssigningContext)_localctx).var = new Assigning(new Variable((((AssigningContext)_localctx).c!=null?((AssigningContext)_localctx).c.getText():null)),((AssigningContext)_localctx).d.value);
 				}
 				break;
 			}
@@ -1000,7 +1000,7 @@ public class PAFGrammarParser extends Parser {
 				((BoolContext)_localctx).c = match(Operator);
 				setState(171);
 				((BoolContext)_localctx).d = operation1();
-				((BoolContext)_localctx).value = new Bool(new Operation(((BoolContext)_localctx).b.op),new Operation(((BoolContext)_localctx).d.op),(((BoolContext)_localctx).c!=null?((BoolContext)_localctx).c.getText():null));
+				((BoolContext)_localctx).value = new Bool(((BoolContext)_localctx).b.op,((BoolContext)_localctx).d.op,(((BoolContext)_localctx).c!=null?((BoolContext)_localctx).c.getText():null));
 				}
 				break;
 			case 3:
@@ -1012,7 +1012,7 @@ public class PAFGrammarParser extends Parser {
 				((BoolContext)_localctx).f = match(Operator);
 				setState(176);
 				((BoolContext)_localctx).g = operation1();
-				((BoolContext)_localctx).value = new Bool(new Variable((((BoolContext)_localctx).e!=null?((BoolContext)_localctx).e.getText():null)),new Operation(((BoolContext)_localctx).g.op),(((BoolContext)_localctx).f!=null?((BoolContext)_localctx).f.getText():null));
+				((BoolContext)_localctx).value = new Bool(new Variable((((BoolContext)_localctx).e!=null?((BoolContext)_localctx).e.getText():null)),((BoolContext)_localctx).g.op,(((BoolContext)_localctx).f!=null?((BoolContext)_localctx).f.getText():null));
 				}
 				break;
 			}

@@ -7,4 +7,12 @@ public class Variable {
 		this.name = name;
 	}
 	
+	public String toString() {
+		return this.name;
+	}
+	
+	public String toAsm() {
+		return null;
+	}
+	
 }
