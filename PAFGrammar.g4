@@ -25,7 +25,7 @@ term returns [Term tm]:
 	lp=LP a=operation1 rp=RP {$tm=new Term(new Operation($a.op),$lp.text,$rp.text);}
 	| n=Number {$tm=new Term($n.text);}
 	| m=MINUS n=Number {$tm=new Term($n.text,$m.text);}
-	| v=Variable {$tm=new Term($v.text);};
+	| v=Variable {$tm=new Term(new Variable($v.text));};
 	
 if_condition returns [Condition cond]:
 	IF LP a=bool RP THEN Dollar b=instructions Dollar {$cond=new Condition(new Bool($a.value),new Instructions($b.instrs));}
@@ -44,13 +44,13 @@ for_loop returns [For_loop for]:
 	FOR LP a=assigning '/' b=bool '/' c=Number RP Dollar d=instructions Dollar {$for=new For_loop(new Bool($b.value),new Assigning($a.var),$c.text,new Instructions($d.instrs));};
 
 assigning returns [Assigning var]:
-	a=Variable EQ b=operation1 {$var=new Assigning($a.text,new Operation($b.op));}
-	| c=Variable EQ d=bool {$var=new Assigning($c.text,new Bool($d.value));};
+	a=Variable EQ b=operation1 {$var=new Assigning(new Variable($a.text),new Operation($b.op));}
+	| c=Variable EQ d=bool {$var=new Assigning(new Variable($c.text),new Bool($d.value));};
 
 bool returns [Bool value]:
 	a=Boolean {$value=new Bool($a.text);}
 	| b=operation1 c=Operator d=operation1 {$value=new Bool(new Operation($b.op),new Operation($d.op),$c.text);}
-	| e=Variable f=Operator g=operation1 {$value=new Bool($e.text,new Operation($g.op),$f.text);}; 
+	| e=Variable f=Operator g=operation1 {$value=new Bool(new Variable($e.text),new Operation($g.op),$f.text);}; 
 
 Dollar : '$';
 Number : [0-9]+;

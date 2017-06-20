@@ -487,7 +487,7 @@ public class PAFGrammarParser extends Parser {
 				{
 				setState(90);
 				((TermContext)_localctx).v = match(Variable);
-				((TermContext)_localctx).tm = new Term((((TermContext)_localctx).v!=null?((TermContext)_localctx).v.getText():null));
+				((TermContext)_localctx).tm = new Term(new Variable((((TermContext)_localctx).v!=null?((TermContext)_localctx).v.getText():null)));
 				}
 				break;
 			default:
@@ -916,7 +916,7 @@ public class PAFGrammarParser extends Parser {
 				match(EQ);
 				setState(157);
 				((AssigningContext)_localctx).b = operation1();
-				((AssigningContext)_localctx).var = new Assigning((((AssigningContext)_localctx).a!=null?((AssigningContext)_localctx).a.getText():null),new Operation(((AssigningContext)_localctx).b.op));
+				((AssigningContext)_localctx).var = new Assigning(new Variable((((AssigningContext)_localctx).a!=null?((AssigningContext)_localctx).a.getText():null)),new Operation(((AssigningContext)_localctx).b.op));
 				}
 				break;
 			case 2:
@@ -928,7 +928,7 @@ public class PAFGrammarParser extends Parser {
 				match(EQ);
 				setState(162);
 				((AssigningContext)_localctx).d = bool();
-				((AssigningContext)_localctx).var = new Assigning((((AssigningContext)_localctx).c!=null?((AssigningContext)_localctx).c.getText():null),new Bool(((AssigningContext)_localctx).d.value));
+				((AssigningContext)_localctx).var = new Assigning(new Variable((((AssigningContext)_localctx).c!=null?((AssigningContext)_localctx).c.getText():null)),new Bool(((AssigningContext)_localctx).d.value));
 				}
 				break;
 			}
@@ -1012,7 +1012,7 @@ public class PAFGrammarParser extends Parser {
 				((BoolContext)_localctx).f = match(Operator);
 				setState(176);
 				((BoolContext)_localctx).g = operation1();
-				((BoolContext)_localctx).value = new Bool((((BoolContext)_localctx).e!=null?((BoolContext)_localctx).e.getText():null),new Operation(((BoolContext)_localctx).g.op),(((BoolContext)_localctx).f!=null?((BoolContext)_localctx).f.getText():null));
+				((BoolContext)_localctx).value = new Bool(new Variable((((BoolContext)_localctx).e!=null?((BoolContext)_localctx).e.getText():null)),new Operation(((BoolContext)_localctx).g.op),(((BoolContext)_localctx).f!=null?((BoolContext)_localctx).f.getText():null));
 				}
 				break;
 			}
