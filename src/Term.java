@@ -28,12 +28,20 @@ public class Term {
 		if (lp != null && rp != null)
 			return lp + var.toString() + rp;
 		else if (variable != null)
-			return variable.toString();
+			return "[" + variable.toString() + "]";
 		else
-			return Integer.toString(number);
+			return Assembly.getVariable(Integer.toString(number));
 	}
 	
 	public String toAsm() {
-		return null;
+		String s = "";
+		if (lp != null && rp != null)
+			return "\t" + var.toAsm();
+		else if (variable != null)
+			return "";
+		else {
+			s = Assembly.getNewVariable(Integer.toString(number));
+			return (s.isEmpty() ? "" : "push " + s + "\n\t") + "mov "+ Assembly.getVariable(Integer.toString(number)) + "," + Integer.toString(number);
+		}
 	}
 }

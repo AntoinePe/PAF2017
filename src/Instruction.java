@@ -46,7 +46,16 @@ public class Instruction {
 	}
 	
 	public String toAsm() {
-		return null;
+		if (cond != null)
+			return cond.toAsm();
+		else if (forLoop != null)
+			return forLoop.toAsm();
+		else if (whileLoop != null)
+			return whileLoop.toAsm();
+		else if (var != null) 
+			return var.toAsm();
+		else
+			return op.toAsm() + "\tpush " + (op.getReturnVariable().startsWith("[") ? "dword " : "") + op.getReturnVariable() + "\n\tpush dword message\n\tcall printf\n\tadd esp,8";
 	}
 
 }

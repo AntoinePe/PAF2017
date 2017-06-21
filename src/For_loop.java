@@ -16,8 +16,8 @@ public class For_loop extends Loop {
 	
 	public String toString() {
 		return "for (" + value.toString() + " / " + bool.toString()
-		+ " / " + number + ") $\n\t" + instructions.toString()
-		+ "\n$";
+		+ " / " + number + ") BEGIN\n\t" + instructions.toString()
+		+ "\nEND";
 	}
 	
 	@Override

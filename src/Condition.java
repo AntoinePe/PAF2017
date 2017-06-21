@@ -25,11 +25,11 @@ public class Condition {
 	
 	public String toString() {
 		if (isElse) {
-			return ("else [\n\t" + instructions.toString() + "\n]");
+			return ("else BEGIN\n\t" + instructions.toString() + "\nEND");
 		} else if(gotElse) {
-			return("if (" +  ifCond.toString() +  ") then $\n\t" + instructions.toString() + "\n$ " + elseCond.toString());
+			return("if (" +  ifCond.toString() +  ") then BEGIN\n\t" + instructions.toString() + "\nEND " + elseCond.toString());
 		} else {
-			return("if (" +  ifCond.toString() +  ") then $\n\t" + instructions.toString() + "\n$");
+			return("if (" +  ifCond.toString() +  ") then BEGIN\n\t" + instructions.toString() + "\nEND");
 		}
 	}
 	

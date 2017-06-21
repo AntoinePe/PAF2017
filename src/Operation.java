@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Operation {
 	
@@ -5,6 +6,7 @@ public class Operation {
 	private Operation term2;
 	private String op;
 	private Term term;
+	private String returnVariable;
 	
 	public Operation(Operation term1, Operation term2, String op) {
 		this.term1 = term1;
@@ -38,6 +40,10 @@ public class Operation {
 		return op;
 	}
 	
+	public String getReturnVariable() {
+		return returnVariable;
+	}
+
 	public String toString() {
 		if (term == null)
 			return term1.toString() + op + term2.toString();
@@ -47,8 +53,33 @@ public class Operation {
 			return term.toString() + op + term2.toString();
 	}
 	
+	public String opToAsm() {		
+		if (op != null) {
+			if (op.equals("+"))
+				return "ADD";
+			else if (op.equals("-"))
+				return "SUB";
+			else
+				return "IMUL";
+		}
+		return "";
+	}
+	
 	public String toAsm() {
-		return null;
+		String s = "" , termAsm = "";
+		if (term == null) {
+			s += term1.toAsm() + term2.toAsm() + "\t" + this.opToAsm() + " " + term1.toString() + "," + term2.toString();
+			returnVariable = term1.getReturnVariable();
+		} else if (op == null) {
+			termAsm = term.toAsm();
+			s += (termAsm.isEmpty() ? "" : "\t" + termAsm + "\n");
+			returnVariable = term.toString();
+		} else {
+			termAsm = term.toAsm();
+			s += (termAsm.isEmpty() ? "" : termAsm) + term2.toAsm() + "\t" + this.opToAsm() + " " + term.toString() + "," + term2.toString();
+			returnVariable = term.toString();
+		}
+		return s;
 	}
 	
 }

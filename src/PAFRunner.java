@@ -25,7 +25,8 @@ public class PAFRunner {
 	    PAFGrammarParser.InstructionsContext tree = parser.instructions();
 	    
 	    BufferedWriter out = new BufferedWriter(new FileWriter(new File("out.txt")));
-	    out.write(tree.instrs.toString());
+	    String assemb = tree.instrs.toAsm();
+	    out.write("extern printf\n" + Assembly.sectionData() + "section .text\nglobal main\n\nmain :\n" + assemb + "\tret");
 	    out.close();
 	    
 	}

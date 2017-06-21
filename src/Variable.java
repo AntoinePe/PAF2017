@@ -11,8 +11,4 @@ public class Variable {
 		return this.name;
 	}
 	
-	public String toAsm() {
-		return null;
-	}
-	
 }

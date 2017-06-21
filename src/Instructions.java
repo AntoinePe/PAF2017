@@ -21,7 +21,10 @@ public class Instructions {
 	}
 	
 	public String toAsm() {
-		return null;
+		if (instrs == null)
+			return instr.toAsm() + "\n";
+		else
+			return instr.toAsm() + "\n" + instrs.toAsm();
 	}
 
 }
