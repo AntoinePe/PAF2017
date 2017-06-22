@@ -28,17 +28,17 @@ term returns [Term tm]:
 	| v=Variable {$tm=new Term(new Variable($v.text));};
 	
 if_condition returns [Condition cond]:
-	IF LP a=bool RP THEN Dollar b=instructions Dollar {$cond=new Condition($a.value,$b.instrs);}
-	| IF LP c=bool RP THEN Dollar d=instructions Dollar e=else_condition  {$cond=new Condition($c.value,$d.instrs,$e.cond);};
+	IF a=bool THEN Dollar b=instructions Dollar {$cond=new Condition($a.value,$b.instrs);}
+	| IF c=bool THEN Dollar d=instructions Dollar e=else_condition  {$cond=new Condition($c.value,$d.instrs,$e.cond);};
 
 else_condition returns [Condition cond]:
 	ELSE LB a=instructions RB {$cond=new Condition($a.instrs);};
 	
 while_loop returns [While_loop whileLoop]:
-	WHILE LP a=bool RP Dollar b=instructions Dollar {$whileLoop=new While_loop($a.value,$b.instrs);};
+	WHILE a=bool  Dollar b=instructions Dollar {$whileLoop=new While_loop($a.value,$b.instrs);};
 	
 dowhile_loop returns [Dowhile_loop dowhileLoop]:
-	DO Dollar a=instructions Dollar WHILE LP b=bool RP {$dowhileLoop=new Dowhile_loop($b.value,$a.instrs);};
+	DO Dollar a=instructions Dollar WHILE b=bool {$dowhileLoop=new Dowhile_loop($b.value,$a.instrs);};
 
 for_loop returns [For_loop forLoop]:
 	FOR LP a=assigning '/' b=bool '/' c=Number RP Dollar d=instructions Dollar {$forLoop=new For_loop($b.value,$a.var,$c.text,$d.instrs);};
@@ -49,8 +49,8 @@ assigning returns [Assigning var]:
 
 bool returns [Bool value]:
 	a=Boolean {$value=new Bool($a.text);}
-	| b=operation1 c=Operator d=operation1 {$value=new Bool($b.op,$d.op,$c.text);}
-	| e=Variable f=Operator g=operation1 {$value=new Bool(new Variable($e.text),$g.op,$f.text);}; 
+	| LP b=operation1 c=Operator d=operation1 RP {$value=new Bool($b.op,$d.op,$c.text);}
+	| LP e=Variable f=Operator g=operation1 RP {$value=new Bool(new Variable($e.text),$g.op,$f.text);}; 
 
 Dollar : '$';
 Boolean : 'True' | 'False';

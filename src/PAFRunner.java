@@ -26,7 +26,8 @@ public class PAFRunner {
 	    
 	    BufferedWriter out = new BufferedWriter(new FileWriter(new File("out.txt")));
 	    String assemb = tree.instrs.toAsm();
-	    out.write("extern printf\n" + Assembly.sectionData() + "section .text\nglobal main\n\nmain :\n" + assemb + "\tret");
+	    Assembly.addToMain(assemb);
+	    out.write(Assembly.toAsm() + "\tret");
 	    out.close();
 	    
 	}

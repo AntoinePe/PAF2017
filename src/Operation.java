@@ -46,14 +46,14 @@ public class Operation {
 
 	public String toString() {
 		if (term == null)
-			return term1.toString() + op + term2.toString();
+			return term1.getReturnVariable();
 		else if (op == null)
 			return term.toString();
 		else
-			return term.toString() + op + term2.toString();
+			return term.toString();
 	}
 	
-	public String opToAsm() {		
+	private String opToAsm() {		
 		if (op != null) {
 			if (op.equals("+"))
 				return "ADD";
@@ -68,7 +68,7 @@ public class Operation {
 	public String toAsm() {
 		String s = "" , termAsm = "";
 		if (term == null) {
-			s += term1.toAsm() + term2.toAsm() + "\t" + this.opToAsm() + " " + term1.toString() + "," + term2.toString();
+			s += term1.toAsm() + term2.toAsm() + "\t" + this.opToAsm() + " " + term1.toString() + "," + term2.toString()+ "\n";
 			returnVariable = term1.getReturnVariable();
 		} else if (op == null) {
 			termAsm = term.toAsm();
@@ -76,7 +76,7 @@ public class Operation {
 			returnVariable = term.toString();
 		} else {
 			termAsm = term.toAsm();
-			s += (termAsm.isEmpty() ? "" : termAsm) + term2.toAsm() + "\t" + this.opToAsm() + " " + term.toString() + "," + term2.toString();
+			s += (termAsm.isEmpty() ? "" : termAsm) + term2.toAsm() + "\t" + this.opToAsm() + " " + term.toString() + "," + term2.toString()+ "\n";
 			returnVariable = term.toString();
 		}
 		return s;

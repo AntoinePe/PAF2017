@@ -26,7 +26,7 @@ public class Term {
 	
 	public String toString() {
 		if (lp != null && rp != null)
-			return lp + var.toString() + rp;
+			return var.toString();
 		else if (variable != null)
 			return "[" + variable.toString() + "]";
 		else
@@ -41,7 +41,7 @@ public class Term {
 			return "";
 		else {
 			s = Assembly.getNewVariable(Integer.toString(number));
-			return (s.isEmpty() ? "" : "push " + s + "\n\t") + "mov "+ Assembly.getVariable(Integer.toString(number)) + "," + Integer.toString(number);
+			return (s.isEmpty() ? "" : "push " + s + "\n\tmov "+ Assembly.getVariable(Integer.toString(number)) + "," + Integer.toString(number));
 		}
 	}
 }

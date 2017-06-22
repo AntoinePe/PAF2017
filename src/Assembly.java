@@ -5,19 +5,28 @@ public class Assembly {
 	
 	private static ArrayList<String> globalVariables = new ArrayList<>();
 	private static HashMap<String,String> variables = new HashMap<>();
+	private static ArrayList<String> whileLoops = new ArrayList<>();
+	private static ArrayList<String> forLoops = new ArrayList<>();
+	private static ArrayList<String> dowhileLoops = new ArrayList<>();
+	private static ArrayList<String> booleans = new ArrayList<>();
+	private static String main = "main :\n";
 	private static String[] registers = {"eax","ebx","ecx","edx"};
-	private static int i = 0;
+	private static int i = 0, j = 0;
+	
+	public static int updateNumberOfMains() {
+		return j++;
+	}
 	
 	public static void update() {
-		if (i >= registers.length)
-			i = -1;
 		i++;
+		if (i >= registers.length) {
+			i = 0;
+		}
 	}
 	
 	public static String getNewVariable(String value) {
 		if (!variables.containsKey(value)) {
-			while (variables.containsValue(registers[i]))
-				update();
+			deleteVariable(registers[i]);
 			variables.put(value, registers[i]);
 			update();
 			return variables.get(value);
@@ -45,12 +54,63 @@ public class Assembly {
 			globalVariables.add(variable);
 	}
 	
-	public static String sectionData() {
-		String s = "section .data\n";
+	public static void addNewWhileLoop(String instructions) {
+		whileLoops.add(instructions);
+	}
+	
+	public static void addNewForLoop(String instructions) {
+		forLoops.add(instructions);
+	}
+	
+	public static void addNewdowhileLoop(String instructions) {
+		dowhileLoops.add(instructions);
+	}
+	
+	public static void addNewBoolean(String instructions) {
+		booleans.add(instructions);
+	}
+	
+	public static int sizeWhileLoops() {
+		return whileLoops.size();
+	}
+	
+	public static int sizeForLoops() {
+		return forLoops.size();
+	}
+	
+	public static int sizeDowhileLoops() {
+		return dowhileLoops.size();
+	}
+	
+	public static int sizeBooleans() {
+		return booleans.size();
+	}
+	
+	public static void addToMain(String instructions) {
+		main += instructions;
+	}
+	
+	private static String sectionData() {
+		String s = "extern printf\nsection .data\n";
 		s += "message: db \"%i\",10,0\n";
 		for (String variable : globalVariables)
 			s += variable + ": db 0\n";
+		return s + "\nsection .text\nglobal main\n\n";
+	}
+	
+	private static String sectionBooleans() {
+		String s = "";
+		for (int i = 0; i < booleans.size(); i++)
+			s += "bool" + i + ":\n" + booleans.get(i);
 		return s + "\n";
+	}
+	
+	public static String toAsm() {
+		String s = "";
+		s += Assembly.sectionData();
+		s += Assembly.sectionBooleans();
+		s += main;
+		return s;
 	}
 
 }

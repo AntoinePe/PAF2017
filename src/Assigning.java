@@ -21,8 +21,8 @@ public class Assigning {
 	
 
 	public String toAsm() {
-		String s = "";
-		String c = "";
+		String s = "", c = "";
+
 		
 		Assembly.addGlobalVariable(var.toString());
 		
@@ -31,8 +31,10 @@ public class Assigning {
 			c = (op.getReturnVariable() != null ? op.getReturnVariable() : op.toString());
 			if (!("[" + var.toString() + "]").equals(c))
 				s += "\tmov [" + var.toString() + "], " + c;
-		} else
-			s += "\tmov [" + var.toString() + "], " + (bool.toString().equals("True") ? 1 : 0);
+		} else {
+			s += bool.toAsm();
+			s += "\tmov [" + var.toString() + "], " + bool.toString();
+		}
 		return s;
 	}
 }
