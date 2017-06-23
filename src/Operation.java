@@ -45,12 +45,7 @@ public class Operation {
 	}
 
 	public String toString() {
-		if (term == null)
-			return term1.getReturnVariable();
-		else if (op == null)
-			return term.toString();
-		else
-			return term.toString();
+		return this.getReturnVariable();
 	}
 	
 	private String opToAsm() {		

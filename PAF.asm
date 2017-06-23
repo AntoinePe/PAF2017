@@ -15,20 +15,24 @@ start:
 	mov [c], eax
 
 	push ebx
-	mov ebx,2
-
+	mov ebx,3
 	push ecx
-	mov ecx,[c]
-	IMUL ecx,ebx
+	mov ecx, [c]
+	SUB ecx,ebx
+
+	push edx
+	mov edx,2
+
+	IMUL ecx,edx
 	mov [c], ecx
 	mov ebp,esp
 	and esp,0xFFFFFFF0
 	sub esp,16
 	mov dword[esp],message
-	mov edx,[c]
-	mov dword[esp+4],edx
+	mov eax,[c]
+	mov dword[esp+4],eax
 	call _printf
-	 pop edx
-	pop eax
+	 pop eax
+	pop edx
 	pop ebx
 	ret

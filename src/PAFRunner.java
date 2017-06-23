@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.tree.*;
 
 public class PAFRunner {
 	
-	public static String OS = "MACOS";
+	public static String OS = System.getProperty("os.name").toLowerCase();
 
 
 	public static void main( String[] args) throws Exception {
@@ -35,7 +35,7 @@ public class PAFRunner {
 	    out.close();
 	    
 	    String makeFile = "";
-	    if (OS.equals("MACOS"))
+	    if (OS.indexOf("mac") >= 0)
 	    	makeFile = "all:\n\tnasm -f macho -o PAF.o PAF.asm && ld -o PAF PAF.o -arch i386 -lc -macosx_version_min 10.6";
 	    else
 	    	makeFile = "all:\n\tnasm -g -felf32 PAF.asm && ld -melf_i386 -I/lib/ld-linux.so.2 -lc --entry start PAF.o";

@@ -69,7 +69,7 @@ public class Instruction {
 			} else
 				s += "\tmov dword[esp+4]," + op.getReturnVariable() + "\n";
 			
-			s += "\tcall " + (PAFRunner.OS.equals("MACOS") ? "_" : "") + "printf";
+			s += "\tcall " + (PAFRunner.OS.indexOf("mac") >= 0 ? "_" : "") + "printf";
 			
 			if (!c.isEmpty()) {
 				s += "\n\t pop " + c;

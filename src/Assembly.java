@@ -104,7 +104,7 @@ public class Assembly {
 	}
 	
 	private static String sectionData() {
-		String s = "extern " + (PAFRunner.OS.equals("MACOS") ? "_" : "") + "printf\nsection .data\n";
+		String s = "extern " + (PAFRunner.OS.indexOf("mac") >= 0 ? "_" : "") + "printf\nsection .data\n";
 		s += "message: db \"%i\",10,0\n";
 		for (String variable : globalVariables)
 			s += variable + ": db 0\n";
