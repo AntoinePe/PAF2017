@@ -57,26 +57,31 @@ public class Bool {
 			s += op1.toAsm() + op2.toAsm();
 			returnVariable = Assembly.getNewVariable("0");
 			s += "\tpush " + returnVariable + "\n";
-			s += "\tcmp " + op1.toString() + " " + op2.toString() + "\n";
+			s += "\tcmp " + op1.toString() + ", " + op2.toString() + "\n";
 			i = Assembly.updateNumberOfMains();
-			Assembly.addNewBoolean("\tmov " + returnVariable + ",1\n\tjmp main" + i + "\n");
-			s += "\t" + this.operatorToAsm() + " bool" + (Assembly.sizeBooleans()-1) + "\n";
-			s += "\tmov " + returnVariable + ",0\n\tjmp main" + i + "\n\nmain" + i + ":\n";
-			s += "\tpop " + op1.toString() + "\n\tpop " + op2.toString()+"\n";
+			Assembly.addNewBoolean("\tmov " + returnVariable + ",1\n\tjmp _main" + i + "\n");
+			s += "\t" + this.operatorToAsm() + " _bool" + (Assembly.sizeBooleans()-1) + "\n";
+			s += "\tmov " + returnVariable + ",0\n\tjmp _main" + i + "\n\n_main" + i + ":\n";
+			if (!op1.toString().startsWith("["))
+				s += "\tpop " + op1.toString() + "\n";
+			if (!op2.toString().startsWith("["))
+				s += "\tpop " + op2.toString() + "\n";
 			Assembly.deleteVariable(op1.toString());
 			Assembly.deleteVariable(op2.toString());
 		} else if (variable != null) {
 			s += op2.toAsm();
 			returnVariable = Assembly.getNewVariable("0");
 			s += "\tpush " + returnVariable + "\n";
-			s += "\tcmp " + variable.toString() + " " + op2.toString() + "\n";
+			s += "\tcmp " + variable.toString() + ", " + op2.toString() + "\n";
 			i = Assembly.updateNumberOfMains();
-			Assembly.addNewBoolean("\tmov " + returnVariable + ",1\n\tjmp main" + i + "\n");
-			s += "\t" + this.operatorToAsm() + " bool" + (Assembly.sizeBooleans()-1) + "\n";
-			s += "\tmov " + returnVariable + ",0\n\tjmp main" + i + "\n\nmain" + i + ":\n";
-			s += "\tpop " + op2.toString() + "\n";
+			Assembly.addNewBoolean("\tmov " + returnVariable + ",1\n\tjmp _main" + i + "\n");
+			s += "\t" + this.operatorToAsm() + " _bool" + (Assembly.sizeBooleans()-1) + "\n";
+			s += "\tmov " + returnVariable + ",0\n\tjmp _main" + i + "\n\n_main" + i + ":\n";
+			if (!op2.toString().startsWith("["))
+				s += "\tpop " + op2.toString() + "\n";
 			Assembly.deleteVariable(op2.toString());
-		}
+		} else 
+			returnVariable =  this.value ? "1" : "0";
 		return s;
 	}
         

@@ -5,16 +5,21 @@ public class Assembly {
 	
 	private static ArrayList<String> globalVariables = new ArrayList<>();
 	private static HashMap<String,String> variables = new HashMap<>();
+	private static ArrayList<String> conditions = new ArrayList<>();
 	private static ArrayList<String> whileLoops = new ArrayList<>();
 	private static ArrayList<String> forLoops = new ArrayList<>();
 	private static ArrayList<String> dowhileLoops = new ArrayList<>();
 	private static ArrayList<String> booleans = new ArrayList<>();
-	private static String main = "main :\n";
+	private static String main = "start:\n";
 	private static String[] registers = {"eax","ebx","ecx","edx"};
 	private static int i = 0, j = 0;
 	
 	public static int updateNumberOfMains() {
 		return j++;
+	}
+	
+	public static int getNumberOfMains() {
+		return j;
 	}
 	
 	public static void update() {
@@ -53,6 +58,10 @@ public class Assembly {
 		if (!globalVariables.contains(variable))
 			globalVariables.add(variable);
 	}
+
+	public static void addCondition(String instructions) {
+		conditions.add(instructions);
+	}
 	
 	public static void addNewWhileLoop(String instructions) {
 		whileLoops.add(instructions);
@@ -68,6 +77,10 @@ public class Assembly {
 	
 	public static void addNewBoolean(String instructions) {
 		booleans.add(instructions);
+	}
+	
+	public static int sizeConditions() {
+		return conditions.size();
 	}
 	
 	public static int sizeWhileLoops() {
@@ -91,17 +104,24 @@ public class Assembly {
 	}
 	
 	private static String sectionData() {
-		String s = "extern printf\nsection .data\n";
+		String s = "extern " + (PAFRunner.OS.equals("MACOS") ? "_" : "") + "printf\nsection .data\n";
 		s += "message: db \"%i\",10,0\n";
 		for (String variable : globalVariables)
 			s += variable + ": db 0\n";
-		return s + "\nsection .text\nglobal main\n\n";
+		return s + "\nsection .text\nglobal start\n\n";
 	}
 	
 	private static String sectionBooleans() {
 		String s = "";
 		for (int i = 0; i < booleans.size(); i++)
-			s += "bool" + i + ":\n" + booleans.get(i);
+			s += "_bool" + i + ":\n" + booleans.get(i);
+		return s + "\n";
+	}
+	
+	private static String sectionConditions() {
+		String s = "";
+		for (int i = 0; i < conditions.size(); i++)
+			s += "_condition" + i + ":\n" + conditions.get(i);
 		return s + "\n";
 	}
 	
@@ -109,7 +129,12 @@ public class Assembly {
 		String s = "";
 		s += Assembly.sectionData();
 		s += Assembly.sectionBooleans();
+		s += Assembly.sectionConditions();
 		s += main;
+		for (String values : variables.values()) {
+			s += "\tpop " + values + "\n";
+		}
+		s += "\tret";
 		return s;
 	}
 

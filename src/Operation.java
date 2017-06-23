@@ -68,16 +68,36 @@ public class Operation {
 	public String toAsm() {
 		String s = "" , termAsm = "";
 		if (term == null) {
-			s += term1.toAsm() + term2.toAsm() + "\t" + this.opToAsm() + " " + term1.toString() + "," + term2.toString()+ "\n";
-			returnVariable = term1.getReturnVariable();
+			s += term1.toAsm() + term2.toAsm();
+			
+			if (!term1.toString().startsWith("["))
+				returnVariable = term1.getReturnVariable();
+			else {
+				returnVariable = Assembly.getNewVariable("0");
+				s += "\tpush " + returnVariable + "\n\tmov " + returnVariable + ", " + term1.toString() + "\n";
+				Assembly.deleteVariable(returnVariable);
+			}
+			
+			s += "\t" + this.opToAsm() + " " + returnVariable + "," + term2.toString()+ "\n";
+			Assembly.deleteVariable(term1.toString());
 		} else if (op == null) {
 			termAsm = term.toAsm();
-			s += (termAsm.isEmpty() ? "" : "\t" + termAsm + "\n");
+			s += (termAsm.isEmpty() ? "" : "\n" + termAsm + "\n");
 			returnVariable = term.toString();
 		} else {
 			termAsm = term.toAsm();
-			s += (termAsm.isEmpty() ? "" : termAsm) + term2.toAsm() + "\t" + this.opToAsm() + " " + term.toString() + "," + term2.toString()+ "\n";
-			returnVariable = term.toString();
+			s += (termAsm.isEmpty() ? "" : termAsm) + term2.toAsm() + "\n";
+			
+			if (!term.toString().startsWith("["))
+				returnVariable = term.toString();
+			else {
+				returnVariable = Assembly.getNewVariable("0");
+				s += "\tpush " + returnVariable + "\n\tmov " + returnVariable + "," + term.toString() + "\n";
+				Assembly.deleteVariable(returnVariable);
+			}
+
+			s += "\t" + this.opToAsm() + " " + returnVariable + "," + term2.toString()+ "\n";
+			Assembly.deleteVariable(term.toString());
 		}
 		return s;
 	}

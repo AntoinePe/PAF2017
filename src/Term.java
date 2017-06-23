@@ -36,12 +36,12 @@ public class Term {
 	public String toAsm() {
 		String s = "";
 		if (lp != null && rp != null)
-			return "\t" + var.toAsm();
+			return var.toAsm();
 		else if (variable != null)
 			return "";
 		else {
 			s = Assembly.getNewVariable(Integer.toString(number));
-			return (s.isEmpty() ? "" : "push " + s + "\n\tmov "+ Assembly.getVariable(Integer.toString(number)) + "," + Integer.toString(number));
+			return (s.isEmpty() ? "" : "\tpush " + s + "\n\tmov "+ Assembly.getVariable(Integer.toString(number)) + "," + Integer.toString(number));
 		}
 	}
 }

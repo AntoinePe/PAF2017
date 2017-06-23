@@ -48,7 +48,7 @@ assigning returns [Assigning var]:
 	| c=Variable EQ d=bool {$var=new Assigning(new Variable($c.text),$d.value);};
 
 bool returns [Bool value]:
-	a=Boolean {$value=new Bool($a.text);}
+	LP? a=Boolean RP? {$value=new Bool($a.text);}
 	| LP b=operation1 c=Operator d=operation1 RP {$value=new Bool($b.op,$d.op,$c.text);}
 	| LP e=Variable f=Operator g=operation1 RP {$value=new Bool(new Variable($e.text),$g.op,$f.text);}; 
 
