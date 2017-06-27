@@ -12,29 +12,37 @@ public class Assigning {
 	
 	public Assigning(Variable a, Bool bool) {
 		this.var = a;
-		this.bool=bool ;
+		this.bool = bool;
 	}
  
 	public String toString() {
 		return var.toString() + " = " + ((op!=null) ? op.toString() : bool.toString());
 	}
 	
+	public String toAsm(Function function) {
+		String s = "", c = "" , d = "", e = "";
 
-	public String toAsm() {
-		String s = "", c = "";
-
-		
-		Assembly.addGlobalVariable(var.toString());
+		if (!function.containsVariable(var.toString()))
+			function.addToVariables(var.toString());
 		
 		if (op != null) {
-			s += op.toAsm();
-			c = (op.getReturnVariable() != null ? op.getReturnVariable() : op.toString());
-			if (!("[" + var.toString() + "]").equals(c))
-				s += "\tmov [" + var.toString() + "], " + c;
+			s += op.toAsm(function);
+			
+			c = op.getReturnVariable();
+			d = "[ebp-" + function.getIdOfVariable(var.toString()) + "]";
+			
+			if (!d.equals(c)) {
+				if (c.startsWith("[")) {
+					e = Assembly.getNewVariable();
+					s += "\tmov " + e + "," + c + "\n";
+					s += "\tmov " + d + "," + e + "\n";
+				} else 
+					s += "\tmov " + d +", " + c;
+			}
 		} else {
-			s += bool.toAsm();
-			s += "\tmov [" + var.toString() + "], " + bool.toString();
+			s += bool.toAsm(function,true);
+			s += "\tmov [ebp-" + function.getIdOfVariable(var.toString()) + "], " + bool.getReturnVariable();
 		}
-		return s;
+		return s + "\n";
 	}
 }

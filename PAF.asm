@@ -1,38 +1,34 @@
 extern _printf
 section .data
-message: db "%i",10,0
-c: db 0
+	message: db "%i",10,0
 
 section .text
 global start
 
-
-
 start:
-
-	push eax
-	mov eax,1
-	mov [c], eax
-
-	push ebx
-	mov ebx,3
-	push ecx
-	mov ecx, [c]
-	SUB ecx,ebx
-
-	push edx
-	mov edx,2
-
-	IMUL ecx,edx
-	mov [c], ecx
-	mov ebp,esp
-	and esp,0xFFFFFFF0
+	push ebp
+	mov ebp, esp
 	sub esp,16
-	mov dword[esp],message
-	mov eax,[c]
-	mov dword[esp+4],eax
+	mov ecx,3
+
+	mov [ebp-4], ecx
+	mov edx,19
+
+	mov [ebp-8], edx
+	mov ebx,[ebp-8]
+	xor edx,edx
+	mov eax,ebx
+	mov ebx,[ebp-4]
+	idiv ebx
+	mov ebx,eax
+	mov [ebp-12], ebx
+	push dword [ebp-12]
+	push dword message
 	call _printf
-	 pop eax
-	pop edx
-	pop ebx
-	ret
+	add esp,8
+	nop
+	add esp,16
+	pop ebp
+	mov eax,1
+	mov ebx,0
+	int 80h

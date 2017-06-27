@@ -2,9 +2,12 @@
 public class Term {
 	
 	private Operation var;
-	private String lp, rp;
+	private String lp, rp, returnVariable;
 	private int number;
 	private Variable variable;
+	private CallFunction callFunction;
+	private static String[] registersOfParameters = {"[esp+16]","[esp+12]","[esp+8]","[esp+4]","edi","esi","edx","ecx","ebx","eax"};
+	private static int indexOfParameter = -1;
 	
 	public Term(Operation var, String lp, String rp) {
 		this.var = var;
@@ -24,24 +27,39 @@ public class Term {
 		this.variable = variable;
 	}
 	
-	public String toString() {
-		if (lp != null && rp != null)
-			return var.toString();
-		else if (variable != null)
-			return "[" + variable.toString() + "]";
-		else
-			return Assembly.getVariable(Integer.toString(number));
+	public Term(CallFunction callFunction) {
+		this.callFunction = callFunction;
 	}
 	
-	public String toAsm() {
+	public String getReturnVariable() {
+		return this.returnVariable;
+	}
+	
+	public static int updateIndex() {
+		indexOfParameter++;
+		if (indexOfParameter >= registersOfParameters.length)
+			indexOfParameter = 0;
+		return indexOfParameter;
+	}
+	
+	public String toAsm(Function function, boolean useRegister) {
 		String s = "";
-		if (lp != null && rp != null)
-			return var.toAsm();
-		else if (variable != null)
-			return "";
-		else {
-			s = Assembly.getNewVariable(Integer.toString(number));
-			return (s.isEmpty() ? "" : "\tpush " + s + "\n\tmov "+ Assembly.getVariable(Integer.toString(number)) + "," + Integer.toString(number));
+		if (lp != null && rp != null) {
+			s = var.toAsm(function);
+			returnVariable = var.getReturnVariable();
+		} else if (variable != null) {
+			returnVariable = "[ebp-" + function.getIdOfVariable(variable.toString()) + "]";
+		} else if (callFunction != null) {
+			s += callFunction.toAsm(function);
+			s += "\tmov " + registersOfParameters[updateIndex()] + ",eax\n";
+			returnVariable = registersOfParameters[indexOfParameter];
+		} else {
+			if (useRegister) {
+				returnVariable = Assembly.getNewVariable();
+				s =  "\tmov "+ returnVariable + "," + Integer.toString(number) + "\n";
+			} else
+				returnVariable = Integer.toString(number);
 		}
+		return s;
 	}
 }

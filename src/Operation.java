@@ -14,9 +14,9 @@ public class Operation {
 		this.op = op;
 	}
 	
-	public Operation(Term term, Operation term2, String op) {
+	public Operation(Term term, Operation term1, String op) {
 		this.term = term;
-		this.term2 = term2;
+		this.term1 = term1;
 		this.op = op;
 	}
 	
@@ -51,48 +51,49 @@ public class Operation {
 	private String opToAsm() {		
 		if (op != null) {
 			if (op.equals("+"))
-				return "ADD";
+				return "add";
 			else if (op.equals("-"))
-				return "SUB";
+				return "sub";
+			else if (op.equals(":"))
+				return "idiv";
 			else
-				return "IMUL";
+				return "imul";
 		}
 		return "";
 	}
 	
-	public String toAsm() {
-		String s = "" , termAsm = "";
-		if (term == null) {
-			s += term1.toAsm() + term2.toAsm();
-			
-			if (!term1.toString().startsWith("["))
-				returnVariable = term1.getReturnVariable();
-			else {
-				returnVariable = Assembly.getNewVariable("0");
-				s += "\tpush " + returnVariable + "\n\tmov " + returnVariable + ", " + term1.toString() + "\n";
-				Assembly.deleteVariable(returnVariable);
-			}
-			
-			s += "\t" + this.opToAsm() + " " + returnVariable + "," + term2.toString()+ "\n";
-			Assembly.deleteVariable(term1.toString());
-		} else if (op == null) {
-			termAsm = term.toAsm();
-			s += (termAsm.isEmpty() ? "" : "\n" + termAsm + "\n");
-			returnVariable = term.toString();
+	public String toAsm(Function function) {
+		String s = "" , termAsm = "", c = "";
+		if (op == null && term != null) {
+			termAsm = term.toAsm(function,true);
+			s += (termAsm.isEmpty() ? "" : termAsm + "\n");
+			returnVariable = term.getReturnVariable();
 		} else {
-			termAsm = term.toAsm();
-			s += (termAsm.isEmpty() ? "" : termAsm) + term2.toAsm() + "\n";
+			termAsm = term.toAsm(function,false);
+			s += term1.toAsm(function) + (termAsm.isEmpty() ? "" : termAsm);
 			
-			if (!term.toString().startsWith("["))
-				returnVariable = term.toString();
-			else {
-				returnVariable = Assembly.getNewVariable("0");
-				s += "\tpush " + returnVariable + "\n\tmov " + returnVariable + "," + term.toString() + "\n";
-				Assembly.deleteVariable(returnVariable);
+			if (!term1.getReturnVariable().startsWith("[")){
+				returnVariable = term1.getReturnVariable();
+				c = Assembly.getNewVariable();
+			} else {
+				returnVariable = Assembly.getNewVariable();
+				s += "\tmov " + returnVariable + "," + term1.getReturnVariable() + "\n";
 			}
 
-			s += "\t" + this.opToAsm() + " " + returnVariable + "," + term2.toString()+ "\n";
-			Assembly.deleteVariable(term.toString());
+			if (this.opToAsm().equals("idiv")) {
+				s += "\txor edx,edx\n";
+				s += "\tmov eax," + returnVariable + "\n";
+				s += "\tmov ebx," + term.getReturnVariable() + "\n";
+				s += "\tidiv ebx\n";
+				s += "\tmov " + returnVariable + ",eax\n";
+			} else {
+				if (this.opToAsm().equals("imul")  && returnVariable.startsWith("[")) {
+					s += "\tmov " + c + "," + returnVariable + "\n";
+					s += "\t" + this.opToAsm() + " " + c + "," + term.getReturnVariable() + "\n";
+					s += "\tmov " + returnVariable + "," + c + "\n";
+				} else
+					s += "\t" + this.opToAsm() + " " + returnVariable + "," + term.getReturnVariable() + "\n";
+			}
 		}
 		return s;
 	}

@@ -1,3 +1,6 @@
-c = 1;
-c = (c-3)*2;
-c;
+define void start() $
+    m <- 3;
+    n <- 19;
+    v <- n:m;
+    print << v;
+$;

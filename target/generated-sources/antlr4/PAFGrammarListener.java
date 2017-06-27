@@ -7,6 +7,56 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface PAFGrammarListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#functions}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctions(PAFGrammarParser.FunctionsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#functions}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctions(PAFGrammarParser.FunctionsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction(PAFGrammarParser.FunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction(PAFGrammarParser.FunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#call_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall_function(PAFGrammarParser.Call_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#call_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall_function(PAFGrammarParser.Call_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameters(PAFGrammarParser.ParametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameters(PAFGrammarParser.ParametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#parameters2}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameters2(PAFGrammarParser.Parameters2Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#parameters2}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameters2(PAFGrammarParser.Parameters2Context ctx);
+	/**
 	 * Enter a parse tree produced by {@link PAFGrammarParser#instructions}.
 	 * @param ctx the parse tree
 	 */

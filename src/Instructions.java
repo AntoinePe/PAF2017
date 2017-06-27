@@ -20,11 +20,11 @@ public class Instructions {
 			return instr.toString() + ";\n" + instrs.toString();
 	}
 	
-	public String toAsm() {
+	public String toAsm(Function function) {
 		if (instrs == null)
-			return instr.toAsm() + "\n";
+			return instr.toAsm(function);
 		else
-			return instr.toAsm() + "\n" + instrs.toAsm();
+			return instr.toAsm(function) + instrs.toAsm(function);
 	}
 
 }

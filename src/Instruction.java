@@ -45,36 +45,25 @@ public class Instruction {
 			return op.toString();
 	}
 	
-	public String toAsm() {
+	public String toAsm(Function function) {
 		String s = "", c = "";
 		if (cond != null)
-			s += cond.toAsm();
+			s += cond.toAsm(function);
 		else if (forLoop != null)
-			s += forLoop.toAsm();
+			s += forLoop.toAsm(function);
 		else if (whileLoop != null)
-			s += whileLoop.toAsm();
+			s += whileLoop.toAsm(function);
+		else if (doWhileLoop != null)
+			s += doWhileLoop.toAsm(function);
 		else if (var != null) 
-			s += var.toAsm();
+			s += var.toAsm(function);
 		else {
-			s += op.toAsm();
-			s += "\tmov ebp,esp\n";
-			s += "\tand esp,0xFFFFFFF0\n";
-			s += "\tsub esp,16\n";
-			s += "\tmov dword[esp],message\n";
-			
-			if (op.getReturnVariable().startsWith("[")) {
-				c = Assembly.getNewVariable("forPrint");
-				s += "\tmov " + c + "," + op.getReturnVariable() + "\n";
-				s += "\tmov dword[esp+4]," + c + "\n";
-			} else
-				s += "\tmov dword[esp+4]," + op.getReturnVariable() + "\n";
-			
+			s += op.toAsm(function);
+			c = op.getReturnVariable();
+			s += "\tpush " + (c.startsWith("[") ? "dword " : "") + c + "\n";
+			s += "\tpush dword message\n";
 			s += "\tcall " + (PAFRunner.OS.indexOf("mac") >= 0 ? "_" : "") + "printf";
-			
-			if (!c.isEmpty()) {
-				s += "\n\t pop " + c;
-				Assembly.deleteVariable(c);
-			}
+			s += "\n\tadd esp,8\n";
 		}
 		return s;
 	}

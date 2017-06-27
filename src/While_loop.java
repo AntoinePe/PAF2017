@@ -16,9 +16,19 @@ public class While_loop extends Loop {
 	}
 
 	@Override
-	public String toAsm() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toAsm(Function function) {
+		String s = "";
+		
+		int i = Assembly.updateNumberOfL(), j = Assembly.updateNumberOfL();
+		
+		s += ".L" + i + ":\n";
+		s += bool.toAsm(function,false);
+		s += "\t" + bool.getOperatorToVariable() + " .L" + j + "\n";
+		s += instructions.toAsm(function);
+		s += "\tjmp .L" + i + "\n";
+		s += ".L" + j + ":\n";
+		
+		return s;
 	}
 
 }

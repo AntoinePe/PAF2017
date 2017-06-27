@@ -5,7 +5,7 @@ public class Bool {
 	private Operation op2;
 	private String operator;
 	private Variable variable;
-	private String returnVariable;
+	private String returnVariable, operatorToVariable = "";
 	
 	public Bool(String bool) {
 		this.value = (bool.equals("True"));
@@ -27,59 +27,97 @@ public class Bool {
 		return returnVariable;
 	}
 	
-	public String toString(){
-		if (op1 != null || variable != null)
-			return this.returnVariable;
-		else
-			return this.value ? "1" : "0";
-	} 
+	public String roperatorToAsm() {		
+		if (operator != null) {
+			if (operator.equals("<"))
+				operatorToVariable = "jl";
+			else if (operator.equals(">"))
+				operatorToVariable = "jg";
+			else if (operator.equals("<="))
+				operatorToVariable = "jle";
+			else if (operator.equals(">="))
+				operatorToVariable = "jge";
+			else
+				operatorToVariable = "je";
+		}
+		return operatorToVariable;
+	}
 	
 	private String operatorToAsm() {		
 		if (operator != null) {
 			if (operator.equals("<"))
-				return "jb";
+				operatorToVariable = "jg";
 			else if (operator.equals(">"))
-				return "ja";
+				operatorToVariable = "jl";
 			else if (operator.equals("<="))
-				return "jbe";
+				operatorToVariable = "jge";
 			else if (operator.equals(">="))
-				return "jae";
+				operatorToVariable = "jle";
 			else
-				return "je";
+				operatorToVariable = "jne";
 		}
-		return "";
+		return operatorToVariable;
 	}
 	
-	public String toAsm(){
-		String s = "";
-		int i = 0;
+	public String getOperatorToVariable() {
+		return operatorToVariable;
+	}
+
+	public String toAsm(Function function,boolean usedInAssigning){
+		String s = "", c = "", returnVariable1 = "", returnVariable2 = "", d = "";
+		int i = 0, j = 0;
+		
+		d = this.operatorToAsm();
+		
 		if (op1 != null) {
-			s += op1.toAsm() + op2.toAsm();
-			returnVariable = Assembly.getNewVariable("0");
-			s += "\tpush " + returnVariable + "\n";
-			s += "\tcmp " + op1.toString() + ", " + op2.toString() + "\n";
-			i = Assembly.updateNumberOfMains();
-			Assembly.addNewBoolean("\tmov " + returnVariable + ",1\n\tjmp _main" + i + "\n");
-			s += "\t" + this.operatorToAsm() + " _bool" + (Assembly.sizeBooleans()-1) + "\n";
-			s += "\tmov " + returnVariable + ",0\n\tjmp _main" + i + "\n\n_main" + i + ":\n";
-			if (!op1.toString().startsWith("["))
-				s += "\tpop " + op1.toString() + "\n";
-			if (!op2.toString().startsWith("["))
-				s += "\tpop " + op2.toString() + "\n";
-			Assembly.deleteVariable(op1.toString());
-			Assembly.deleteVariable(op2.toString());
+			s += op1.toAsm(function) + op2.toAsm(function);
+			
+			returnVariable = Assembly.getNewVariable();
+			
+			returnVariable1 = op1.getReturnVariable();
+			returnVariable2 = op2.getReturnVariable();
+			
+			if (returnVariable1.startsWith("[") && returnVariable2.startsWith("[")) {
+				c = Assembly.getNewVariable();
+				s += "\tmov " + c + ", " + returnVariable2 + "\n";
+			} else {
+				c = returnVariable2;
+			}
+			
+			s += "\tcmp " + returnVariable1 + ", " + c + "\n";
+			if (usedInAssigning) {
+				i = Assembly.updateNumberOfL();
+				j = Assembly.updateNumberOfL();
+				s += "\t" + d + " .L" + i + "\n";
+				s += "\tmov " + returnVariable + ",1\n\tjmp .L" + j;
+				s += "\n.L" + i + ":\n\tmov " + returnVariable + ",0\n";
+				s += ".L" + j + ":\n";
+			}
 		} else if (variable != null) {
-			s += op2.toAsm();
-			returnVariable = Assembly.getNewVariable("0");
-			s += "\tpush " + returnVariable + "\n";
-			s += "\tcmp " + variable.toString() + ", " + op2.toString() + "\n";
-			i = Assembly.updateNumberOfMains();
-			Assembly.addNewBoolean("\tmov " + returnVariable + ",1\n\tjmp _main" + i + "\n");
-			s += "\t" + this.operatorToAsm() + " _bool" + (Assembly.sizeBooleans()-1) + "\n";
-			s += "\tmov " + returnVariable + ",0\n\tjmp _main" + i + "\n\n_main" + i + ":\n";
-			if (!op2.toString().startsWith("["))
-				s += "\tpop " + op2.toString() + "\n";
-			Assembly.deleteVariable(op2.toString());
+			s += op2.toAsm(function);
+						
+			returnVariable = Assembly.getNewVariable();
+			
+			returnVariable2 = op2.getReturnVariable();
+			
+			if (returnVariable2.startsWith("[")) {
+				c = Assembly.getNewVariable();
+				s += "\tmov " + c + ", " + returnVariable2 + "\n";
+			} else {
+				c = returnVariable2;
+			}
+			
+			s += "\tcmp [ebp-" + function.getIdOfVariable(variable.toString()) + "], " + c + "\n";
+			
+			if (usedInAssigning) {
+				i = Assembly.updateNumberOfL();
+				j = Assembly.updateNumberOfL();
+				s += "\t" + d + " .L" + i + "\n";
+				s += "\tmov " + returnVariable + ",1\n\tjmp .L" + j;
+				s += "\n.L" + i + ":\n\tmov " + returnVariable + ",0\n";
+				s += ".L" + j + ":\n";
+			}
+			
 		} else 
 			returnVariable =  this.value ? "1" : "0";
 		return s;

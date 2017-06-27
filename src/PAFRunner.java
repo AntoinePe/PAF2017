@@ -25,11 +25,11 @@ public class PAFRunner {
 		PAFGrammarLexer lexer = new PAFGrammarLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		PAFGrammarParser parser = new PAFGrammarParser(tokens);
-	    PAFGrammarParser.InstructionsContext tree = parser.instructions();
+	    PAFGrammarParser.FunctionsContext tree = parser.functions();
 	    
 	    File file = new File("PAF.asm");
 	    BufferedWriter out = new BufferedWriter(new FileWriter(file));
-	    String assemb = tree.instrs.toAsm();
+	    String assemb = tree.funcs.toAsm();
 	    Assembly.addToMain(assemb);
 	    out.write(Assembly.toAsm());
 	    out.close();

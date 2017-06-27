@@ -4,7 +4,6 @@ public class Condition {
 	private boolean isElse = false, gotElse = true;
 	private Instructions instructions;
 	private Condition elseCond;
-	private int nextMain;
 	
 	public Condition(Bool ifCond, Instructions instructions, Condition elseCond) {
 		this.ifCond = ifCond;
@@ -22,10 +21,6 @@ public class Condition {
 		this.isElse = true;
 		this.gotElse = false;
 	}
-	
-	private int getNextMain() {
-		return nextMain;
-	}
 
 	public String toString() {
 		if (isElse) {
@@ -37,28 +32,33 @@ public class Condition {
 		}
 	}
 	
-	public String toAsm() {
-		String s = "";
+	public String toAsm(Function function) {
+		String s = "", c = "";
+		int i = 0, j = 0;
 		if (isElse) {
-			s += instructions.toAsm();
-			nextMain = Assembly.getNumberOfMains();
-			s += "\tjmp _main" + nextMain + "\n\n_main" + nextMain + ":\n";
+			s += instructions.toAsm(function);
 		} else if(gotElse) {
-			s += ifCond.toAsm();
-			s += "\tcmp " + ifCond.getReturnVariable() + ",1\n";
-			nextMain = Assembly.updateNumberOfMains();
-
-			Assembly.addCondition(instructions.toAsm() + "\tjmp _main" + nextMain + "\n");
+			s += ifCond.toAsm(function,false);
 			
-			s += "\tje _condition" + (Assembly.sizeConditions()-1) + "\n";
-			s += elseCond.toAsm();
+			i = Assembly.updateNumberOfL();
+			j = Assembly.updateNumberOfL();
+			
+			c = instructions.toAsm(function);
+			
+			s += "\t" + ifCond.getOperatorToVariable() + " .L" + i + "\n";
+			s += instructions.toAsm(function);
+			s += "\tjmp .L" + j + "\n";
+			s += ".L" + i + ":\n";
+			s += elseCond.toAsm(function);
+			s += ".L" + j + ":\n";
 		} else {
-			s += ifCond.toAsm();
-			nextMain = Assembly.updateNumberOfMains();
-			s += "\tcmp " + ifCond.getReturnVariable() + ",1\n";
-			Assembly.addCondition(instructions.toAsm() + "\tjmp _main" + nextMain + "\n");
-			s += "\tje condition" + (Assembly.sizeConditions()-1) + "\n";
-			s += "\tjmp _main" + nextMain + "\n\n_main" + nextMain + ":";
+			s += ifCond.toAsm(function,false);
+			
+			i = Assembly.updateNumberOfL();
+			
+			s += "\t" + ifCond.getOperatorToVariable() + " .L" + i + "\n";
+			s += instructions.toAsm(function);
+			s += ".L" + i + ":\n";
 		}
 		return s;
 	}

@@ -15,8 +15,19 @@ public class Dowhile_loop extends Loop {
 	}
 
 	@Override
-	public String toAsm() {
-		return null;
+	public String toAsm(Function function) {
+		String s = "", c = "";
+		
+		int i = Assembly.updateNumberOfL(), j = Assembly.updateNumberOfL();
+		
+		s += ".L" + i + ":\n";
+		s += instructions.toAsm(function);
+		s += "\tjmp .L" + j + "\n";
+		s += ".L" + j + ":\n";
+		s += bool.toAsm(function,false);
+		s += "\t" + bool.roperatorToAsm() + " .L" + i + "\n";
+		
+		return s;
 	}
 
 }
