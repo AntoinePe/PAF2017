@@ -1,6 +1,6 @@
 define void start() $
     m <- 3;
-    n <- 19;
-    v <- n:m;
-    print << v;
+    n <- 20;
+    w <- [ (n > 20) ? m ? (-31+(m*n)) ];
+    print << w;
 $;

@@ -1,0 +1,21 @@
+define void start() $
+    m <- 3;
+    n <- 20;
+    v <- n:m;
+    w <- n%m;
+    print << v;
+    print << w;
+    auto op <- [] (integer op1, integer op2) $ k <- op1:op2; return k; $;
+    print << op(n,m);
+    auto fibonacci <- [] (integer n) $
+    	if (n == 0) then $
+	        d <- 0;
+	    $ elif (n == 1) then $
+	    	d <- 1;
+	    $ else $
+	    	d <- fibonacci(n-1)+fibonacci(n-2);
+	    $;
+	    return d; $;
+	print << fibonacci(10);
+    
+$;

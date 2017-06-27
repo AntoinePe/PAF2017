@@ -5,6 +5,7 @@ public class Function {
 	private String name, type, returnVariable;
 	private Instructions instructions;
 	private ArrayList<String> variables = new ArrayList<String>();
+	private ArrayList<String> lambdaFunctions = new ArrayList<>();
 	private String[] registersOfParameters = {"eax","ebx","ecx","edx","esi","edi","[esp+4]","[esp+8]","[esp+12]","[esp+16]"};
 	private int indexOfParameter = -1;
 	private int indexOfParameterOfCalledFunctions = -1;
@@ -32,6 +33,10 @@ public class Function {
 	
 	public Function(String name, String type, Instructions instructions, String returnVariable) {
 		this(name,type,instructions,returnVariable,null);
+	}
+	
+	public void addALambdaFunction(String value) {
+		lambdaFunctions.add(value);
 	}
 	
 	public int updateIndex() {
@@ -107,9 +112,13 @@ public class Function {
 			
 		s += "\tadd esp,16\n\tpop ebp\n";
 		if (name.equals("start"))
-			s += "\tmov eax,1\n\tmov ebx,0\n\tint 80h";
+			s += "\tmov eax,1\n\tmov ebx,0\n\tint 80h\n";
 		else 
-			s += "\tret";
+			s += "\tret\n";
+		
+		for (String x : lambdaFunctions) {
+			s += x;
+		}
 		
 		return s;
 	}

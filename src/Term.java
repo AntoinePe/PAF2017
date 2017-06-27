@@ -8,6 +8,14 @@ public class Term {
 	private CallFunction callFunction;
 	private static String[] registersOfParameters = {"[esp+16]","[esp+12]","[esp+8]","[esp+4]","edi","esi","edx","ecx","ebx","eax"};
 	private static int indexOfParameter = -1;
+	private Bool cond;
+	private Term ifTrue, ifFalse;
+	
+	public Term(Bool cond, Term ifTrue, Term ifFalse) {
+		this.cond = cond;
+		this.ifFalse = ifFalse;
+		this.ifTrue = ifTrue;
+	}
 	
 	public Term(Operation var, String lp, String rp) {
 		this.var = var;
@@ -44,7 +52,13 @@ public class Term {
 	
 	public String toAsm(Function function, boolean useRegister) {
 		String s = "";
-		if (lp != null && rp != null) {
+		
+		if (cond != null) {			
+			s += ifFalse.toAsm(function, true) + ifTrue.toAsm(function, true) + cond.toAsm(function, false);
+			returnVariable = Assembly.getNewVariable();
+			s += "\tmov " + returnVariable + "," + ifFalse.getReturnVariable() + "\n";
+			s += "\tcmov" + cond.roperatorToAsm().replaceAll("j", "") + " " + returnVariable + "," + ifTrue.getReturnVariable();
+		} else if (lp != null && rp != null) {
 			s = var.toAsm(function);
 			returnVariable = var.getReturnVariable();
 		} else if (variable != null) {

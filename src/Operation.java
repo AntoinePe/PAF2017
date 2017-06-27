@@ -56,6 +56,8 @@ public class Operation {
 				return "sub";
 			else if (op.equals(":"))
 				return "idiv";
+			else if (op.equals("%"))
+				return "%idiv";
 			else
 				return "imul";
 		}
@@ -86,6 +88,12 @@ public class Operation {
 				s += "\tmov ebx," + term.getReturnVariable() + "\n";
 				s += "\tidiv ebx\n";
 				s += "\tmov " + returnVariable + ",eax\n";
+			} else if (this.opToAsm().equals("%idiv")) {
+				s += "\txor edx,edx\n";
+				s += "\tmov eax," + returnVariable + "\n";
+				s += "\tmov ebx," + term.getReturnVariable() + "\n";
+				s += "\tidiv ebx\n";
+				s += "\tmov " + returnVariable + ",edx\n";
 			} else {
 				if (this.opToAsm().equals("imul")  && returnVariable.startsWith("[")) {
 					s += "\tmov " + c + "," + returnVariable + "\n";

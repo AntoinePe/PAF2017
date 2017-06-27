@@ -9,7 +9,7 @@ function returns [Function func]:
 	| DEFINE c=RETURNTYPES d=Variable LP RP Dollar e=instructions RETURN f=(Variable | Number) END Dollar {$func=new Function($d.text,$c.text,$e.instrs,$f.text);}
 	| DEFINE VOID f=Variable LP g=parameters2 RP Dollar h=instructions Dollar {$func=new Function($f.text,$h.instrs,$g.param);}
 	| DEFINE i=RETURNTYPES j=Variable LP k=parameters2 RP Dollar l=instructions RETURN m=(Variable | Number) END Dollar {$func=new Function($j.text,$i.text,$l.instrs,$m.text,$k.param);};
-
+	
 call_function returns [CallFunction funcCall]:
 	a=Variable LP RP {$funcCall=new CallFunction($a.text);}
 	| b=Variable LP c=parameters RP {$funcCall=new CallFunction($b.text,$c.param);};
@@ -42,14 +42,16 @@ operation1 returns [Operation op]:
 operation2 returns [Operation op]:
 	a=term {$op=new Operation($a.tm);}
 	| c=operation2 t=TIMES b=term {$op=new Operation($b.tm,$c.op,$t.text);}
-	| f=operation2 e=DIV d=term {$op=new Operation($d.tm,$f.op,$e.text);};
+	| f=operation2 e=DIV d=term {$op=new Operation($d.tm,$f.op,$e.text);}
+	| i=operation2 h=REM g=term {$op=new Operation($g.tm,$i.op,$h.text);};
 	
 term returns [Term tm]:
 	lp=LP a=operation1 rp=RP {$tm=new Term($a.op,$lp.text,$rp.text);}
 	| n=Number {$tm=new Term($n.text);}
 	| m=MINUS n=Number {$tm=new Term($n.text,$m.text);}
 	| o=call_function {$tm=new Term($o.funcCall);}
-	| v=Variable {$tm=new Term(new Variable($v.text));};
+	| v=Variable {$tm=new Term(new Variable($v.text));}
+	| LB b=bool QUES c=term QUES d=term RB {$tm=new Term($b.value,$c.tm,$d.tm);};
 	
 if_condition returns [Condition cond]:
 	IF a=bool THEN Dollar b=instructions Dollar {$cond=new Condition($a.value,$b.instrs);}
@@ -70,7 +72,9 @@ for_loop returns [For_loop forLoop]:
 
 assigning returns [Assigning var]:
 	a=Variable AOPERATOR b=operation1 {$var=new Assigning(new Variable($a.text),$b.op);}
-	| c=Variable AOPERATOR d=bool {$var=new Assigning(new Variable($c.text),$d.value);};
+	| c=Variable AOPERATOR d=bool {$var=new Assigning(new Variable($c.text),$d.value);}
+	| n=AUTO e=Variable AOPERATOR LB RB Dollar f=instructions RETURN r=(Variable | Number) END Dollar {$var=new Assigning(new Function($e.text,$n.text,$f.instrs,$r.text));}
+	| m=AUTO g=Variable AOPERATOR LB RB LP h=parameters2 RP Dollar i=instructions RETURN q=(Variable | Number) END Dollar {$var=new Assigning(new Function($g.text,$m.text,$i.instrs,$q.text,$h.param));};
 
 bool returns [Bool value]:
 	LP? a=Boolean RP? {$value=new Bool($a.text);}
@@ -88,6 +92,7 @@ RP : ')';
 PRINT : 'print';
 POPERATOR : '<<';
 AOPERATOR : '<-';
+QUES : '?';
 IF : 'if';
 ELSE : 'else';
 ELIF : 'elif';
@@ -107,10 +112,12 @@ PLUS : '+';
 MINUS : '-';
 TIMES : '*';
 DIV : ':';
+REM : '%';
 VOID : 'void';
 RETURNTYPES : 'integer';
 DEFINE : 'define';
 RETURN : 'return';
+AUTO : 'auto';
 Variable : [A-Za-z][A-Za-z0-9]*;
 Number : [0-9]+;
 WS  :   ( ' '

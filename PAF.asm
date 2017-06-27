@@ -12,16 +12,20 @@ start:
 	mov ecx,3
 
 	mov [ebp-4], ecx
-	mov edx,19
+	mov edx,20
 
 	mov [ebp-8], edx
-	mov ebx,[ebp-8]
-	xor edx,edx
-	mov eax,ebx
+	mov eax,-31
+
 	mov ebx,[ebp-4]
-	idiv ebx
-	mov ebx,eax
-	mov [ebp-12], ebx
+	imul ebx,[ebp-8]
+	add eax,ebx
+	mov edx,20
+
+	cmp [ebp-8], edx
+	mov eax,eax
+	cmovg eax,[ebp-4]
+	mov [ebp-12], eax
 	push dword [ebp-12]
 	push dword message
 	call _printf
