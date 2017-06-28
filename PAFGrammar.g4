@@ -10,14 +10,6 @@ function returns [Function func]:
 	| DEFINE VOID f=Variable LP g=parameters2 RP Dollar h=instructions Dollar {$func=new Function($f.text,$h.instrs,$g.param);}
 	| DEFINE i=RETURNTYPES j=Variable LP k=parameters2 RP Dollar l=instructions RETURN m=(Variable | Number) END Dollar {$func=new Function($j.text,$i.text,$l.instrs,$m.text,$k.param);};
 	
-call_function returns [CallFunction funcCall]:
-	a=Variable LP RP {$funcCall=new CallFunction($a.text);}
-	| b=Variable LP c=parameters RP {$funcCall=new CallFunction($b.text,$c.param);};
-	
-parameters returns [Parameter param]:
-	a=operation1 {$param=new Parameter($a.op);}
-	| b=operation1 COMMA c=parameters {$param=new Parameter($b.op,$c.param);};
-	
 parameters2 returns [Parameter2 param]:
 	a=RETURNTYPES b=Variable {$param=new Parameter2(new Variable($b.text),$a.text);}
 	| c=RETURNTYPES d=Variable COMMA e=parameters2 {$param=new Parameter2(new Variable($d.text),$c.text,$e.param);};
@@ -37,14 +29,11 @@ instruction returns [Instruction instr]:
 	
 operation1 returns [Operation op]:
 	a=operation2 {$op=$a.op;}
-	| b=operation1 p=PLUS c=term {$op=new Operation($c.tm,$b.op,$p.text);}
-	| d=operation1 m=MINUS e=term {$op=new Operation($e.tm,$d.op,$m.text);};
+	| b=operation1 p=(PLUS | MINUS) c=term {$op=new Operation($c.tm,$b.op,$p.text);};
 	
 operation2 returns [Operation op]:
 	a=term {$op=new Operation($a.tm);}
-	| c=operation2 t=TIMES b=term {$op=new Operation($b.tm,$c.op,$t.text);}
-	| f=operation2 e=DIV d=term {$op=new Operation($d.tm,$f.op,$e.text);}
-	| i=operation2 h=REM g=term {$op=new Operation($g.tm,$i.op,$h.text);};
+	| c=operation2 t=(TIMES | DIV | REM | POPERATOR | SOPERATOR | BAND | BOR) b=term {$op=new Operation($b.tm,$c.op,$t.text);};
 	
 term returns [Term tm]:
 	lp=LP a=operation1 rp=RP {$tm=new Term($a.op,$lp.text,$rp.text);}
@@ -54,13 +43,22 @@ term returns [Term tm]:
 	| v=Variable {$tm=new Term(new Variable($v.text));}
 	| LB b=bool QUES c=term QUES d=term RB {$tm=new Term($b.value,$c.tm,$d.tm);};
 	
+call_function returns [CallFunction funcCall]:
+	a=Variable LP RP {$funcCall=new CallFunction($a.text);}
+	| b=Variable LP c=parameters RP {$funcCall=new CallFunction($b.text,$c.param);};
+	
+parameters returns [Parameter param]:
+	a=operation1 {$param=new Parameter($a.op);}
+	| b=operation1 COMMA c=parameters {$param=new Parameter($b.op,$c.param);};
+	
 if_condition returns [Condition cond]:
 	IF a=bool THEN Dollar b=instructions Dollar {$cond=new Condition($a.value,$b.instrs);}
 	| IF c=bool THEN Dollar d=instructions Dollar e=else_condition  {$cond=new Condition($c.value,$d.instrs,$e.cond);};
 
 else_condition returns [Condition cond]:
 	ELSE Dollar a=instructions Dollar {$cond=new Condition($a.instrs);}
-	| ELIF b=bool THEN Dollar c=instructions Dollar d=else_condition {$cond=new Condition($b.value,$c.instrs,$d.cond);};
+	| ELIF b=bool THEN Dollar c=instructions Dollar d=else_condition {$cond=new Condition($b.value,$c.instrs,$d.cond);}
+	| ELIF e=bool THEN Dollar f=instructions Dollar {$cond=new Condition($e.value,$f.instrs);};
 	
 while_loop returns [While_loop whileLoop]:
 	WHILE a=bool  Dollar b=instructions Dollar {$whileLoop=new While_loop($a.value,$b.instrs);};
@@ -75,7 +73,7 @@ assigning returns [Assigning var]:
 	a=Variable AOPERATOR b=operation1 {$var=new Assigning(new Variable($a.text),$b.op);}
 	| c=Variable AOPERATOR d=bool {$var=new Assigning(new Variable($c.text),$d.value);}
 	| n=AUTO e=Variable AOPERATOR LB RB Dollar f=instructions RETURN r=(Variable | Number) END Dollar {$var=new Assigning(new Function($e.text,$n.text,$f.instrs,$r.text));}
-	| m=AUTO g=Variable AOPERATOR LB RB LP h=parameters2 RP Dollar i=instructions RETURN q=(Variable | Number) END Dollar {$var=new Assigning(new Function($g.text,$m.text,$i.instrs,$q.text,$h.param));}|
+	| m=AUTO g=Variable AOPERATOR LB RB LP h=parameters2 RP Dollar i=instructions RETURN q=(Variable | Number) END Dollar {$var=new Assigning(new Function($g.text,$m.text,$i.instrs,$q.text,$h.param));}
 	| STRING k=Variable AOPERATOR l=String {$var=new Assigning(new Variable($k.text),$l.text);}
 	| STRING o=Variable {$var=new Assigning(new Variable($o.text));};
 
@@ -105,8 +103,10 @@ WHILE : 'while';
 DO : 'do';
 FOR : 'for';
 THEN : 'then';
-AND : '&';
+AND : '&&';
 OR : '||';
+BAND : '&';
+BOR : '|';
 NOT : '!';
 END : ';';
 COMMA : ',';

@@ -57,7 +57,7 @@ public class Assigning {
 			if (valueOfString != null) {
 				function.addAString(var.toString(),"db " + valueOfString + ",0\n");
 			} else if (op != null) {
-				s += op.toAsm(function,false);
+				s += op.toAsm(function,true);
 				
 				c = op.getReturnVariable();
 				d = "[ebp-" + function.getIdOfVariable(var.toString()) + "]";

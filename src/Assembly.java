@@ -1,11 +1,8 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Assembly {
 	
-	private static ArrayList<String> globalVariables = new ArrayList<>();
-	private static ArrayList<String> unassignedVariables = new ArrayList<>();
-	//private static String[] registers = {"eax","ebx","ecx","edx"};
+	private static ArrayList<String> globalVariables = new ArrayList<>(), unassignedVariables = new ArrayList<>();
 	private static String[] registers = {"eax","ecx","edx","ebx"};
 	private static int i = 0, j = 0, numberOfScan = 0;
 	private static String main = "";

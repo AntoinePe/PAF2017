@@ -39,30 +39,6 @@ public class PAFGrammarBaseListener implements PAFGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCall_function(PAFGrammarParser.Call_functionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCall_function(PAFGrammarParser.Call_functionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterParameters(PAFGrammarParser.ParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitParameters(PAFGrammarParser.ParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterParameters2(PAFGrammarParser.Parameters2Context ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -130,6 +106,30 @@ public class PAFGrammarBaseListener implements PAFGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTerm(PAFGrammarParser.TermContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCall_function(PAFGrammarParser.Call_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCall_function(PAFGrammarParser.Call_functionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParameters(PAFGrammarParser.ParametersContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParameters(PAFGrammarParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

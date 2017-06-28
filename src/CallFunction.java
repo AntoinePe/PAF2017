@@ -1,9 +1,8 @@
 
 public class CallFunction {
 	
-	private String name;
+	private String name, operations;
 	private Parameter param;
-	private String operations;
 
 	public CallFunction(String name, Parameter param) {
 		this.name = name;

@@ -1,44 +1,13 @@
 define void start() $
-    m <- Takeuchi(37,34,48);
-    print << m;
-    n <- Tak(37,34,48);
-    print << n;
-	t <- 0;
-	scan >> "%d" >> t;
-    k <- McCarthy(t);
-    print << k;
-$;
-
-define integer McCarthy(integer n) $
-	a <- 0;
-	if (n > 100) then $
-		a <- n - 10;
-	$ else $
-		a <- McCarthy(McCarthy(n+11));
-	$;
-	return a;
-$;
-
-define integer Takeuchi(integer x, integer y, integer z) $
-	a <- 0;
-	if (y < x) then $
-		a <- Takeuchi(Takeuchi(x-1,y,z),Takeuchi(y-1,z,x),Takeuchi(z-1,x,y));
-	$ else $
-		a <- y;
-	$;
-	return a;
-$;
-
-define integer Tak(integer x, integer y, integer z) $
-	a <- 0;
-	if (x <= y) then $
-		a <- y;
-	$ else $
-		if (y <= z) then $
-			a <- z;
-		$ else $
-			a <- x;
-		$;
-	$;
-	return a;
+	z <- 3+4;
+    k <- 2;
+    a <- 3<<k;
+    print << a;
+    a <- a << 4;
+    print << a;
+	b <- 13;
+	b <- 13 >> 3;
+	print << b;
+    c <-  ((a | b) == 193);
+    print << (c<<8);
 $;

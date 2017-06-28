@@ -27,26 +27,6 @@ public interface PAFGrammarListener extends ParseTreeListener {
 	 */
 	void exitFunction(PAFGrammarParser.FunctionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PAFGrammarParser#call_function}.
-	 * @param ctx the parse tree
-	 */
-	void enterCall_function(PAFGrammarParser.Call_functionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PAFGrammarParser#call_function}.
-	 * @param ctx the parse tree
-	 */
-	void exitCall_function(PAFGrammarParser.Call_functionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PAFGrammarParser#parameters}.
-	 * @param ctx the parse tree
-	 */
-	void enterParameters(PAFGrammarParser.ParametersContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PAFGrammarParser#parameters}.
-	 * @param ctx the parse tree
-	 */
-	void exitParameters(PAFGrammarParser.ParametersContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PAFGrammarParser#parameters2}.
 	 * @param ctx the parse tree
 	 */
@@ -106,6 +86,26 @@ public interface PAFGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTerm(PAFGrammarParser.TermContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#call_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall_function(PAFGrammarParser.Call_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#call_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall_function(PAFGrammarParser.Call_functionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameters(PAFGrammarParser.ParametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameters(PAFGrammarParser.ParametersContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PAFGrammarParser#if_condition}.
 	 * @param ctx the parse tree

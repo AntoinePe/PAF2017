@@ -5,15 +5,12 @@ public class Function {
 	
 	private String name, type, returnVariable;
 	private Instructions instructions;
-	private ArrayList<String> variables = new ArrayList<>();
+	private ArrayList<String> variables = new ArrayList<>(), lambdaFunctions = new ArrayList<>();
 	private HashMap<String,String> variablesString = new HashMap<>();
-	private ArrayList<String> lambdaFunctions = new ArrayList<>();
 	private String[] registersOfParameters = {"eax","ebx","ecx","edx","esi","edi","[esp+4]","[esp+8]","[esp+12]","[esp+16]","[esp+20]","[esp+24]","[esp+28]","[esp+32]"};
-	private int indexOfParameter = -1;
-	private int indexOfParameterOfCalledFunctions = -1;
-	private Parameter2 param;
 	private String[] registersOfParameters2 = {"[esp+32]","[esp+28]","[esp+24]","[esp+20]","[esp+16]","[esp+12]","[esp+8]","[esp+4]","edi","esi","edx","ecx","ebx","eax"};
-	private int indexOfParameter2 = -1;
+	private int indexOfParameter = -1, indexOfParameter2 = -1, indexOfParameterOfCalledFunctions = -1;
+	private Parameter2 param;
 	private boolean val = false;
 	
 	public Function(String name, Instructions instructions, Parameter2 param) {

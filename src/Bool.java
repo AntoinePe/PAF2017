@@ -1,11 +1,9 @@
 
 public class Bool {
 	private boolean value;
-	private Operation op1;
-	private Operation op2;
-	private String operator;
+	private Operation op1, op2;
 	private Variable variable;
-	private String returnVariable, operatorToVariable = "";
+	private String operator, returnVariable, operatorToVariable = "";
 	
 	public Bool(String bool) {
 		this.value = (bool.equals("True"));

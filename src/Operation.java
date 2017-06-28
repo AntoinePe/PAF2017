@@ -1,12 +1,9 @@
-import java.util.ArrayList;
 
 public class Operation {
 	
-	private Operation term1;
-	private Operation term2;
-	private String op;
+	private Operation term1, term2;
+	private String op, returnVariable;
 	private Term term;
-	private String returnVariable;
 	
 	public Operation(Operation term1, Operation term2, String op) {
 		this.term1 = term1;
@@ -58,6 +55,14 @@ public class Operation {
 				return "idiv";
 			else if (op.equals("%"))
 				return "%idiv";
+			else if (op.equals("<<"))
+				return "sal";
+			else if (op.equals(">>"))
+				return "sar";
+			else if (op.equals("&"))
+				return "and";
+			else if (op.equals("|"))
+				return "or";
 			else
 				return "imul";
 		}
@@ -99,6 +104,9 @@ public class Operation {
 					s += "\tmov " + c + "," + returnVariable + "\n";
 					s += "\t" + this.opToAsm() + " " + c + "," + term.getReturnVariable() + "\n";
 					s += "\tmov " + returnVariable + "," + c + "\n";
+				} else if ((this.opToAsm().equals("sal") | this.opToAsm().equals("sar"))  && term.getReturnVariable().startsWith("[")) {
+					s += "\tmov " + c + "," + term.getReturnVariable() + "\n";
+					s += "\t" + this.opToAsm() + " " + returnVariable + "," + c.replace("e", "").replace('x', 'l') + "\n";
 				} else
 					s += "\t" + this.opToAsm() + " " + returnVariable + "," + term.getReturnVariable() + "\n";
 			}

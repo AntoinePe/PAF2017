@@ -2,8 +2,7 @@
 public class For_loop extends Loop {
 	
 	private Bool bool;
-	private Assigning value;
-	private Assigning assign;
+	private Assigning value, assign;
 	private Instructions instructions;
 	
 	
