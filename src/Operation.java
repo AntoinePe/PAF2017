@@ -77,7 +77,7 @@ public class Operation {
 			returnVariable = term.getReturnVariable();
 		} else {
 			termAsm = term.toAsm(function,false);
-			s += term1.toAsm(function,useRegister) + (termAsm.isEmpty() ? "" : termAsm);
+			s += term1.toAsm(function,true) + (termAsm.isEmpty() ? "" : termAsm);
 			
 			if (!term1.getReturnVariable().startsWith("[")){
 				returnVariable = term1.getReturnVariable();

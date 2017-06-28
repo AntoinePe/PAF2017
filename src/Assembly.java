@@ -50,8 +50,10 @@ public class Assembly {
 		if (numberOfScan > 0)
 			s += "extern " + (PAFRunner.OS.indexOf("mac") >= 0 ? "_" : "") + "scanf\n";
 		s += "section .data\n";
-		s += "\tintMessage: db \"%i\",10,0\n";
-		s += "\tstringMessage: db \"%s\",10,0\n";
+		s += "\tintMessage: db \"%i\",0\n";
+		s += "\tstringMessage: db \"%s\",0\n";
+		s += "\tintMessageL: db \"%i\",10,0\n";
+		s += "\tstringMessageL: db \"%s\",10,0\n";
 		for (String variable : globalVariables)
 			s += variable;
 		return s;

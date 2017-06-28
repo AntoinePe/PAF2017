@@ -8,7 +8,13 @@ public class Instruction {
 	private Assigning var = null;
 	private Operation op = null;
 	private String result, variable;
+	private int newLine;
+	private CallFunction callFunction;
 	
+	public Instruction(CallFunction callFunction) {
+		this.callFunction = callFunction;
+	}
+
 	public Instruction(String result, String variable) {
 		this.result = result;
 		this.variable = variable;
@@ -34,8 +40,9 @@ public class Instruction {
 		this.var = var;
 	}
 
-	public Instruction(Operation op) {
+	public Instruction(Operation op, int newLine) {
 		this.op = op;
+		this.newLine = newLine;
 	}
 	
 	public String toString() {
@@ -64,6 +71,8 @@ public class Instruction {
 			s += doWhileLoop.toAsm(function);
 		else if (var != null) 
 			s += var.toAsm(function);
+		else if (callFunction != null)
+			s += callFunction.toAsm(function);
 		else if (result != null && variable != null) {
 			i = Assembly.updateNumberOfScan();
 			Assembly.addGlobalVariable("result" + i + ": db " + result + ",0\n");
@@ -88,7 +97,7 @@ public class Instruction {
 			s += op.toAsm(function,true);
 			c = op.getReturnVariable();
 			s += "\tpush " + (c.startsWith("[") ? "dword " : "") + c + "\n";
-			s += "\tpush dword " + ((c.startsWith(".") || c.startsWith(function.getName())) ? "stringMessage" : "intMessage") + "\n";
+			s += "\tpush dword " + ((c.startsWith(".") || c.startsWith(function.getName())) ? "stringMessage" : "intMessage") + (newLine == 1 ? "L" : "") + "\n";
 			s += "\tcall " + (PAFRunner.OS.indexOf("mac") >= 0 ? "_" : "") + "printf";
 			s += "\n\tadd esp,8\n";
 		}

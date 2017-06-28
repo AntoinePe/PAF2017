@@ -1,13 +1,73 @@
 define void start() $
-	z <- 3+4;
-    k <- 2;
-    a <- 3<<k;
-    print << a;
-    a <- a << 4;
-    print << a;
-	b <- 13;
-	b <- 13 >> 3;
-	print << b;
-    c <-  ((a | b) == 193);
-    print << (c<<8);
+	String regle <- "Les règles sont:";
+	print << regle;
+	grille1 <- 999;
+	grille2 <- 999;
+	grille3 <- 999;
+	inp <- 0;
+	i <- 1;
+	g1 <- False;
+	g2 <- False;
+	String j1 <- "A joueur 1 de jouer";
+	String j2 <- "A joueur 2 de jouer";
+	while ((g1 == g2) &&(i < 10)) $
+		if (i%2 == 1) then $
+			print << j1;
+			printGrille(grille);
+			
+			do $
+				scan >> "%d" >> inp;
+			$ while (libre(grille1,grille2,grille3,imp) == True);
+			
+			ecrire(grille1,grille2,grille3,inp,i);
+			
+			if (fini(grille1,grille2,grille3) == True) then $
+				g1<-True;$;
+			$ else $
+				print << j2;
+				printGrille(grille1,grille2,grille3);
+				
+				do $ 
+					scan >> "%d" >> inp;
+				$ while (libre(grille1,grille2,grille3,inp) == True);
+				
+				ecrire (grille,inp,i);
+				
+				if (fini(grille1,grille2,grille3) == True) then $
+					g2<-True;
+				$;
+			$;
+		i<-i+1;
+	$;
+	
+	String w1 <- "Joueur 1 a gagné";
+	String w2 <- "Joueur 2 a gagné";
+	String d <- "Partie nulle";
+	if (g1 == True) then $
+		print << w1;
+	$ elif (g2==True) then $
+		print << w2;
+	$ else $
+		print<<d;
+	$;
+$;
+
+define integer libre(integer grille1,integer grille2,integer grille3,integer imp) $
+
+
+$;
+
+define void ecrire(integer grille1, integer grille2, integer grille3, integer inp, integer i) $
+
+
+$;
+
+define integer fini(integer grille1, integer grille2, integer grille3) $
+
+	return ;
+$;
+
+define void printGrille(integer grille1, integer grille2, integer grille3) $
+
+
 $;

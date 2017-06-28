@@ -4,6 +4,13 @@ public class Bool {
 	private Operation op1, op2;
 	private Variable variable;
 	private String operator, returnVariable, operatorToVariable = "";
+	private Bool bool1, bool2;
+	
+	public Bool(Bool bool1, Bool bool2, String operator) {
+		this.bool1 = bool1;
+		this.bool2 = bool2;
+		this.operator = operator;
+	}
 	
 	public Bool(String bool) {
 		this.value = (bool.equals("True"));
@@ -35,6 +42,12 @@ public class Bool {
 				operatorToVariable = "jle";
 			else if (operator.equals(">="))
 				operatorToVariable = "jge";
+			else if (operator.equals("!="))
+				operatorToVariable = "jne";
+			else if (operator.equals("&&"))
+				operatorToVariable = "and";
+			else if (operator.equals("||"))
+				operatorToVariable = "or";
 			else
 				operatorToVariable = "je";
 		}
@@ -51,6 +64,12 @@ public class Bool {
 				operatorToVariable = "jg";
 			else if (operator.equals(">="))
 				operatorToVariable = "jl";
+			else if (operator.equals("!="))
+				operatorToVariable = "je";
+			else if (operator.equals("&&"))
+				operatorToVariable = "or";
+			else if (operator.equals("||"))
+				operatorToVariable = "and";
 			else
 				operatorToVariable = "jne";
 		}
@@ -67,7 +86,28 @@ public class Bool {
 		
 		d = this.operatorToAsm();
 		
-		if (op1 != null) {
+		if (bool1 != null && bool2 != null) {
+			s += bool1.toAsm(function,usedInAssigning) + bool2.toAsm(function,usedInAssigning);
+			
+			returnVariable = Assembly.getNewVariable();
+			
+			returnVariable1 = bool1.getReturnVariable();
+			returnVariable2 = bool2.getReturnVariable();
+			
+			if (returnVariable1.startsWith("[") && returnVariable2.startsWith("[")) {
+				c = Assembly.getNewVariable();
+				s += "\tmov " + c + ", " + returnVariable2 + "\n";
+			} else {
+				c = returnVariable2;
+			}
+			
+			s += "\tmov " + returnVariable + "," + returnVariable1 + "\n";
+			s += "\t" + this.operatorToAsm() + " " + returnVariable + ", " + c + "\n";
+					
+			if (!usedInAssigning) {
+				s += "\tcmp " + returnVariable + ",1\n";
+			}
+		} else if (op1 != null) {
 			s += op1.toAsm(function,true) + op2.toAsm(function,true);
 			
 			returnVariable = Assembly.getNewVariable();

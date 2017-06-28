@@ -22,7 +22,12 @@ public class Term {
 	}
 	
 	public Term(String number){
-		this.number = Integer.parseInt(number);
+		if (number.equals("True"))
+			this.number = 1;
+		else if (number.equals("False"))
+			this.number = 0;
+		else
+			this.number = Integer.parseInt(number);
 	}
 	
 	public Term(String number, String minus) {
