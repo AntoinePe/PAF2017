@@ -6,8 +6,6 @@ public class Term {
 	private int number;
 	private Variable variable;
 	private CallFunction callFunction;
-	private static String[] registersOfParameters = {"[esp+16]","[esp+12]","[esp+8]","[esp+4]","edi","esi","edx","ecx","ebx","eax"};
-	private static int indexOfParameter = -1;
 	private Bool cond;
 	private Term ifTrue, ifFalse;
 	
@@ -43,15 +41,9 @@ public class Term {
 		return this.returnVariable;
 	}
 	
-	public static int updateIndex() {
-		indexOfParameter++;
-		if (indexOfParameter >= registersOfParameters.length)
-			indexOfParameter = 0;
-		return indexOfParameter;
-	}
-	
 	public String toAsm(Function function, boolean useRegister) {
 		String s = "";
+		int i = 0;
 		
 		if (cond != null) {			
 			s += ifFalse.toAsm(function, true) + ifTrue.toAsm(function, true) + cond.toAsm(function, false);
@@ -59,14 +51,22 @@ public class Term {
 			s += "\tmov " + returnVariable + "," + ifFalse.getReturnVariable() + "\n";
 			s += "\tcmov" + cond.roperatorToAsm().replaceAll("j", "") + " " + returnVariable + "," + ifTrue.getReturnVariable();
 		} else if (lp != null && rp != null) {
-			s = var.toAsm(function);
+			s = var.toAsm(function,useRegister);
 			returnVariable = var.getReturnVariable();
 		} else if (variable != null) {
-			returnVariable = "[ebp-" + function.getIdOfVariable(variable.toString()) + "]";
+			if (function.isString(variable.toString()))
+				returnVariable = "." + function.getName() + "." + variable.toString();
+			else if (Assembly.containsUnassignedVariable(function.getName() + "." + variable.toString()))
+				returnVariable = function.getName() + "." + variable.toString();
+			else
+				returnVariable = "[ebp-" + function.getIdOfVariable(variable.toString()) + "]";
 		} else if (callFunction != null) {
 			s += callFunction.toAsm(function);
-			s += "\tmov " + registersOfParameters[updateIndex()] + ",eax\n";
-			returnVariable = registersOfParameters[indexOfParameter];
+			i = function.updateIndex2();
+			if (function.getRegistersOfParameters2()[i].equals("[esp+16]"))
+				function.is32(true);
+			s += "\tmov " + function.getRegistersOfParameters2()[i] + ",eax\n";
+			returnVariable = function.getRegistersOfParameters2()[i];
 		} else {
 			if (useRegister) {
 				returnVariable = Assembly.getNewVariable();

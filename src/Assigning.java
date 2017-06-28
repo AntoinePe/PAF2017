@@ -5,6 +5,20 @@ public class Assigning {
 	private Operation op;
 	private Bool bool ;
 	private Function lambdaFunction;
+	private String valueOfString;
+	
+	public Assigning(Variable a) {
+		this.var = a;
+		this.valueOfString = null;
+		this.op = null;
+		this.bool = null;
+		this.lambdaFunction = null;
+	}
+	
+	public Assigning(Variable a, String valueOfString) {
+		this.var = a;
+		this.valueOfString = valueOfString;
+	}
 	
 	public Assigning(Function lambdaFunction) {
 		this.lambdaFunction = lambdaFunction;
@@ -33,12 +47,17 @@ public class Assigning {
 
 		if (lambdaFunction != null)
 			function.addALambdaFunction(lambdaFunction.toAsm());
+		else if (lambdaFunction == null && op == null && bool == null && valueOfString == null) {
+			Assembly.addUnassignedVariable(function.getName() + "." + var.toString());
+		}
 		else {
 			if (!function.containsVariable(var.toString()))
 				function.addToVariables(var.toString());
 			
-			if (op != null) {
-				s += op.toAsm(function);
+			if (valueOfString != null) {
+				function.addAString(var.toString(),"db " + valueOfString + ",0\n");
+			} else if (op != null) {
+				s += op.toAsm(function,false);
 				
 				c = op.getReturnVariable();
 				d = "[ebp-" + function.getIdOfVariable(var.toString()) + "]";
@@ -47,13 +66,13 @@ public class Assigning {
 					if (c.startsWith("[")) {
 						e = Assembly.getNewVariable();
 						s += "\tmov " + e + "," + c + "\n";
-						s += "\tmov " + d + "," + e + "\n";
+						s += "\tmov dword " + d + "," + e + "\n";
 					} else 
-						s += "\tmov " + d +", " + c;
+						s += "\tmov dword " + d +", " + c;
 				}
 			} else {
 				s += bool.toAsm(function,true);
-				s += "\tmov [ebp-" + function.getIdOfVariable(var.toString()) + "], " + bool.getReturnVariable();
+				s += "\tmov dword [ebp-" + function.getIdOfVariable(var.toString()) + "], " + bool.getReturnVariable();
 			}
 			s += "\n";
 		}

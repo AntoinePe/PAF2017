@@ -32,7 +32,8 @@ instruction returns [Instruction instr]:
 	| c=while_loop {$instr=new Instruction($c.whileLoop);}
 	| d=dowhile_loop {$instr=new Instruction($d.dowhileLoop);}
 	| e=assigning {$instr=new Instruction($e.var);}
-	| PRINT POPERATOR f=operation1 {$instr=new Instruction($f.op);};
+	| PRINT POPERATOR f=operation1 {$instr=new Instruction($f.op);}
+	| SCAN SOPERATOR g=String SOPERATOR h=Variable {$instr=new Instruction($g.text,$h.text);};
 	
 operation1 returns [Operation op]:
 	a=operation2 {$op=$a.op;}
@@ -74,7 +75,9 @@ assigning returns [Assigning var]:
 	a=Variable AOPERATOR b=operation1 {$var=new Assigning(new Variable($a.text),$b.op);}
 	| c=Variable AOPERATOR d=bool {$var=new Assigning(new Variable($c.text),$d.value);}
 	| n=AUTO e=Variable AOPERATOR LB RB Dollar f=instructions RETURN r=(Variable | Number) END Dollar {$var=new Assigning(new Function($e.text,$n.text,$f.instrs,$r.text));}
-	| m=AUTO g=Variable AOPERATOR LB RB LP h=parameters2 RP Dollar i=instructions RETURN q=(Variable | Number) END Dollar {$var=new Assigning(new Function($g.text,$m.text,$i.instrs,$q.text,$h.param));};
+	| m=AUTO g=Variable AOPERATOR LB RB LP h=parameters2 RP Dollar i=instructions RETURN q=(Variable | Number) END Dollar {$var=new Assigning(new Function($g.text,$m.text,$i.instrs,$q.text,$h.param));}|
+	| STRING k=Variable AOPERATOR l=String {$var=new Assigning(new Variable($k.text),$l.text);}
+	| STRING o=Variable {$var=new Assigning(new Variable($o.text));};
 
 bool returns [Bool value]:
 	LP? a=Boolean RP? {$value=new Bool($a.text);}
@@ -90,7 +93,9 @@ RB : ']';
 LP : '(';
 RP : ')';
 PRINT : 'print';
+SCAN : 'scan';
 POPERATOR : '<<';
+SOPERATOR : '>>';
 AOPERATOR : '<-';
 QUES : '?';
 IF : 'if';
@@ -114,11 +119,14 @@ TIMES : '*';
 DIV : ':';
 REM : '%';
 VOID : 'void';
-RETURNTYPES : 'integer';
+RETURNTYPES : INTEGER;
+INTEGER : 'integer';
+STRING : 'String';
 DEFINE : 'define';
 RETURN : 'return';
 AUTO : 'auto';
 Variable : [A-Za-z][A-Za-z0-9]*;
+String : '"' ([A-Za-z0-9] | ' ' | ',' | ':' | '?' | '!' | ';' | '%')* '"';
 Number : [0-9]+;
 WS  :   ( ' '
         | '\t'

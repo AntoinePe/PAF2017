@@ -46,13 +46,13 @@ public class Bool {
 	private String operatorToAsm() {		
 		if (operator != null) {
 			if (operator.equals("<"))
-				operatorToVariable = "jg";
-			else if (operator.equals(">"))
-				operatorToVariable = "jl";
-			else if (operator.equals("<="))
 				operatorToVariable = "jge";
-			else if (operator.equals(">="))
+			else if (operator.equals(">"))
 				operatorToVariable = "jle";
+			else if (operator.equals("<="))
+				operatorToVariable = "jg";
+			else if (operator.equals(">="))
+				operatorToVariable = "jl";
 			else
 				operatorToVariable = "jne";
 		}
@@ -70,7 +70,7 @@ public class Bool {
 		d = this.operatorToAsm();
 		
 		if (op1 != null) {
-			s += op1.toAsm(function) + op2.toAsm(function);
+			s += op1.toAsm(function,true) + op2.toAsm(function,true);
 			
 			returnVariable = Assembly.getNewVariable();
 			
@@ -94,7 +94,7 @@ public class Bool {
 				s += ".L" + j + ":\n";
 			}
 		} else if (variable != null) {
-			s += op2.toAsm(function);
+			s += op2.toAsm(function,true);
 						
 			returnVariable = Assembly.getNewVariable();
 			

@@ -1,7 +1,7 @@
 define void start() $
-    m <- fibonacci2(10);
+    m <- fibonacci2(30);
     print << m;
-    n <- fibonacci(10);
+    n <- fibonacci(30);
     print << n;
     v <- (m > 30);
     print << v;

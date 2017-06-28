@@ -1,15 +1,20 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Function {
 	
 	private String name, type, returnVariable;
 	private Instructions instructions;
-	private ArrayList<String> variables = new ArrayList<String>();
+	private ArrayList<String> variables = new ArrayList<>();
+	private HashMap<String,String> variablesString = new HashMap<>();
 	private ArrayList<String> lambdaFunctions = new ArrayList<>();
-	private String[] registersOfParameters = {"eax","ebx","ecx","edx","esi","edi","[esp+4]","[esp+8]","[esp+12]","[esp+16]"};
+	private String[] registersOfParameters = {"eax","ebx","ecx","edx","esi","edi","[esp+4]","[esp+8]","[esp+12]","[esp+16]","[esp+20]","[esp+24]","[esp+28]","[esp+32]"};
 	private int indexOfParameter = -1;
 	private int indexOfParameterOfCalledFunctions = -1;
 	private Parameter2 param;
+	private String[] registersOfParameters2 = {"[esp+32]","[esp+28]","[esp+24]","[esp+20]","[esp+16]","[esp+12]","[esp+8]","[esp+4]","edi","esi","edx","ecx","ebx","eax"};
+	private int indexOfParameter2 = -1;
+	private boolean val = false;
 	
 	public Function(String name, Instructions instructions, Parameter2 param) {
 		this.name = name;
@@ -35,8 +40,24 @@ public class Function {
 		this(name,type,instructions,returnVariable,null);
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void addAString(String name,String value) {
+		variablesString.put(name,value);
+	}
+	
+	public boolean isString(String variable) {
+		return variablesString.containsKey(variable);
+	}
+	
 	public void addALambdaFunction(String value) {
 		lambdaFunctions.add(value);
+	}
+	
+	public void is32(boolean val) {
+		this.val = val;
 	}
 	
 	public int updateIndex() {
@@ -44,6 +65,13 @@ public class Function {
 		if (indexOfParameter >= registersOfParameters.length)
 			indexOfParameter = 0;
 		return indexOfParameter;
+	}
+	
+	public int updateIndex2() {
+		indexOfParameter2++;
+		if (indexOfParameter2 >= registersOfParameters2.length)
+			indexOfParameter2 = 0;
+		return indexOfParameter2;
 	}
 	
 	public int getNumOfParameters() {
@@ -64,9 +92,13 @@ public class Function {
 	public int getNumOfParametersOfFunctions() {
 		return indexOfParameterOfCalledFunctions;
 	}
-	
+
 	public String[] getRegistersOfParameters() {
 		return registersOfParameters;
+	}
+	
+	public String[] getRegistersOfParameters2() {
+		return registersOfParameters2;
 	}
 
 	public void addToVariables(String value) {
@@ -90,18 +122,20 @@ public class Function {
 	}
 	
 	public String toAsm() {
-		String s = "", c = "";
+		String s = "", c = "", d = "";
+		
+		if (param != null)
+			d += param.toAsm(this);
+		
+		d += instructions.toAsm(this);
 		
 		if (!name.equals("start"))
 			s += name + ":\n";
 		else
 			s += "start:\n";
-		s += "\tpush ebp\n\tmov ebp, esp\n\tsub esp,16\n";
+		s += "\tpush ebp\n\tmov ebp, esp\n\tsub esp," + (val ? 32 : 16) + "\n";
 		
-		if (param != null)
-			s += param.toAsm(this);
-		
-		s += instructions.toAsm(this);
+		s += d;
 		
 		if (type.isEmpty())
 			s += "\tnop\n";
@@ -110,11 +144,15 @@ public class Function {
 		else
 			s += "\tmov eax,[ebp-" + this.getIdOfVariable(returnVariable) + "]\n";
 			
-		s += "\tadd esp,16\n\tpop ebp\n";
+		s += "\tadd esp," + (val ? 32 : 16) + "\n\tpop ebp\n";
 		if (name.equals("start"))
 			s += "\tmov eax,1\n\tmov ebx,0\n\tint 80h\n";
 		else 
 			s += "\tret\n";
+		
+		for (String key : variablesString.keySet()) {
+			s += "." + this.name + "." + key + ": " + variablesString.get(key);
+		}
 		
 		for (String x : lambdaFunctions) {
 			s += x;

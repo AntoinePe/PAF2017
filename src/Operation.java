@@ -64,15 +64,15 @@ public class Operation {
 		return "";
 	}
 	
-	public String toAsm(Function function) {
+	public String toAsm(Function function, boolean useRegister) {
 		String s = "" , termAsm = "", c = "";
 		if (op == null && term != null) {
-			termAsm = term.toAsm(function,true);
+			termAsm = term.toAsm(function,useRegister);
 			s += (termAsm.isEmpty() ? "" : termAsm + "\n");
 			returnVariable = term.getReturnVariable();
 		} else {
 			termAsm = term.toAsm(function,false);
-			s += term1.toAsm(function) + (termAsm.isEmpty() ? "" : termAsm);
+			s += term1.toAsm(function,useRegister) + (termAsm.isEmpty() ? "" : termAsm);
 			
 			if (!term1.getReturnVariable().startsWith("[")){
 				returnVariable = term1.getReturnVariable();
