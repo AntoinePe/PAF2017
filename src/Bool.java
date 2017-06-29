@@ -45,9 +45,9 @@ public class Bool {
 			else if (operator.equals("!="))
 				operatorToVariable = "jne";
 			else if (operator.equals("&&"))
-				operatorToVariable = "and";
+				operatorToVariable = "je";
 			else if (operator.equals("||"))
-				operatorToVariable = "or";
+				operatorToVariable = "je";
 			else
 				operatorToVariable = "je";
 		}
@@ -67,9 +67,9 @@ public class Bool {
 			else if (operator.equals("!="))
 				operatorToVariable = "je";
 			else if (operator.equals("&&"))
-				operatorToVariable = "or";
+				operatorToVariable = "jne";
 			else if (operator.equals("||"))
-				operatorToVariable = "and";
+				operatorToVariable = "jne";
 			else
 				operatorToVariable = "jne";
 		}
@@ -87,7 +87,7 @@ public class Bool {
 		d = this.operatorToAsm();
 		
 		if (bool1 != null && bool2 != null) {
-			s += bool1.toAsm(function,usedInAssigning) + bool2.toAsm(function,usedInAssigning);
+			s += bool1.toAsm(function,true) + bool2.toAsm(function,true);
 			
 			returnVariable = Assembly.getNewVariable();
 			
@@ -102,7 +102,7 @@ public class Bool {
 			}
 			
 			s += "\tmov " + returnVariable + "," + returnVariable1 + "\n";
-			s += "\t" + this.operatorToAsm() + " " + returnVariable + ", " + c + "\n";
+			s += "\t" + (operator.equals("&&") ? "and" : "or") + " " + returnVariable + ", " + c + "\n";
 					
 			if (!usedInAssigning) {
 				s += "\tcmp " + returnVariable + ",1\n";

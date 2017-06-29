@@ -57,6 +57,16 @@ public interface PAFGrammarListener extends ParseTreeListener {
 	 */
 	void exitInstruction(PAFGrammarParser.InstructionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PAFGrammarParser#printInstr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintInstr(PAFGrammarParser.PrintInstrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PAFGrammarParser#printInstr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintInstr(PAFGrammarParser.PrintInstrContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PAFGrammarParser#operation1}.
 	 * @param ctx the parse tree
 	 */

@@ -1,73 +1,71 @@
-define void start() $
-	String regle <- "Les règles sont:";
-	print << regle;
-	grille1 <- 999;
-	grille2 <- 999;
-	grille3 <- 999;
-	inp <- 0;
-	i <- 1;
-	g1 <- False;
-	g2 <- False;
-	String j1 <- "A joueur 1 de jouer";
-	String j2 <- "A joueur 2 de jouer";
-	while ((g1 == g2) &&(i < 10)) $
-		if (i%2 == 1) then $
-			print << j1;
-			printGrille(grille);
-			
-			do $
-				scan >> "%d" >> inp;
-			$ while (libre(grille1,grille2,grille3,imp) == True);
-			
-			ecrire(grille1,grille2,grille3,inp,i);
-			
-			if (fini(grille1,grille2,grille3) == True) then $
-				g1<-True;$;
-			$ else $
-				print << j2;
-				printGrille(grille1,grille2,grille3);
-				
-				do $ 
-					scan >> "%d" >> inp;
-				$ while (libre(grille1,grille2,grille3,inp) == True);
-				
-				ecrire (grille,inp,i);
-				
-				if (fini(grille1,grille2,grille3) == True) then $
-					g2<-True;
-				$;
-			$;
-		i<-i+1;
-	$;
-	
-	String w1 <- "Joueur 1 a gagné";
-	String w2 <- "Joueur 2 a gagné";
-	String d <- "Partie nulle";
-	if (g1 == True) then $
-		print << w1;
-	$ elif (g2==True) then $
-		print << w2;
-	$ else $
-		print<<d;
-	$;
+define void start()$
+        i <- 0;
+        String invite <- "Entrez un nombre de batons initial :";
+        String enlever <- "Entrez un nombre de batons à enlever (entre 1 et 3) :";
+        String error <- "Il faut saisir un nombre entre 1 et 3!";
+        print << invite << endline;
+        n <- 0;
+        
+        do $
+            scan >> "%d" >> n;
+            if ((n <= 0) || (n > 3)) then $
+              	print << error << endline;
+            $;
+        $ while ((n <= 0) || (n > 3));
+        
+        g1 <- False;  
+        g2 <- False;  
+        
+        while (g1 == g2) $
+                printGame(n);
+                nb <- 4;
+                print << "Au tour du joueur %d!" << ((i%2)+1) << endline;
+                print << enlever << endline;
+                do $
+                	scan >> "%d" >> nb;
+                	if ((nb <= 0) && (nb >= 3)) then $
+                		print << error << endline;
+                	$;
+                $ while (valide(nb,n) == False);
+                n <- n-nb;
+        
+                if(n==1) then $
+                      if ((i%2) == 0) then$
+                       		g1 <- True;
+                      $ else $
+                      		g2 <- True;
+                      $; 
+                $;
+                i <- i+1;
+        $;
+        printFin(g1,g2);
 $;
 
-define integer libre(integer grille1,integer grille2,integer grille3,integer imp) $
 
+define void printGame(integer n)$
+        String s <- "L'état du jeu est : ";
+        print << s << endline;
+        String symbole <- "|";
+        for(i<-0 / (i<n-1) / i<-i+1)$
+                print << symbole;
+        $;
+        print << symbole << endline;
+$; 
 
+define integer valide(integer nb, integer n)$
+        val <- True;
+        if (((nb<0) || (nb>3)) || (nb>n)) then $
+                val <- False;
+        $;
+        return val;
 $;
 
-define void ecrire(integer grille1, integer grille2, integer grille3, integer inp, integer i) $
-
-
-$;
-
-define integer fini(integer grille1, integer grille2, integer grille3) $
-
-	return ;
-$;
-
-define void printGrille(integer grille1, integer grille2, integer grille3) $
-
-
+define void printFin(integer g1,integer g2)$
+        String gagne1 <- "Félicitation, le joueur 1 gagne !";
+        String gagne2 <- "Félicitation, le joueur 2 gagne !";
+        if(g1 == True) then $
+                print << gagne1 << endline;
+        $ elif(g2 == True) then $
+                print << gagne2 << endline;
+        $;
 $;

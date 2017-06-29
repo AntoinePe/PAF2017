@@ -26,9 +26,8 @@ public class Parameter {
 		variableOfOperation = op.getReturnVariable();
 				
 		if (function.getRegistersOfParameters()[i].startsWith("[")) {
-			String returnVariable = Assembly.getNewVariable();
-			s[1] +=  "\tmov "+ returnVariable + "," + variableOfOperation + "\n";
-			s[1] += "\tmov " + function.getRegistersOfParameters()[i] + ", " + returnVariable + "\n";
+			s[1] += "\tmov esi," + variableOfOperation + "\n";
+			s[1] += "\tmov " + function.getRegistersOfParameters()[i] + ", esi\n";
 		} else {
 			s[1] += "\tmov " + function.getRegistersOfParameters()[i] + ", " + variableOfOperation + "\n";
 		}

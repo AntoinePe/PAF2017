@@ -1,0 +1,135 @@
+define void start() $
+	String rules <- "Les règles sont:";
+	String notFound <- "Le numéro de la case saisie est incorrecte!";
+	String notPossible <- "La case n'est pas libre!";
+	String nulle <- "Partie nulle";
+	
+	print << rules << endline;
+	
+	grille1 <- 0;
+	grille2 <- 0;
+	grille3 <- 0;
+	grille4 <- 0;
+	grille5 <- 0;
+	grille6 <- 0;
+	grille7 <- 0;
+	grille8 <- 0;
+	grille9 <- 0;
+	
+	inp <- 0;
+	i <- 1;
+	winner <- 0;
+	stop <- True;
+	
+	while ( (winner == 0) && (i < 10)) $
+		print << "Joueur %d:" << (((i-1)%2)+1) << endline;
+		printLine(grille1,grille2,grille3);
+		printLine(grille4,grille5,grille6);
+		printLine(grille7,grille8,grille9);
+		
+		stop <- False;
+		do $
+			scan >> "%d" >> inp;
+			if ((inp == 1) && (grille1 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 2) && (grille2 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 3) && (grille3 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 4) && (grille4 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 5) && (grille5 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 6) && (grille6 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 7) && (grille7 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 8) && (grille8 == 0)) then $
+				stop <- True;
+			$ elif ((inp == 9) && (grille9 == 0)) then $
+				stop <- True;
+			$ elif ((inp > 9) || (inp < 0)) then $
+				print << notFound << endline;
+			$ else $
+				print << notPossible << endline;
+			$;
+		$ while (stop == False);
+		
+		if (inp == 1) then $
+			grille1 <- ((i-1)%2)+1;
+		$ elif (inp == 2) then $
+			grille2 <- ((i-1)%2)+1;
+		$ elif (inp == 3) then $
+			grille3 <- ((i-1)%2)+1;
+		$ elif (inp == 4) then $
+			grille4 <- ((i-1)%2)+1;
+		$ elif (inp == 5) then $
+			grille5 <- ((i-1)%2)+1;
+		$ elif (inp == 6) then $
+			grille6 <- ((i-1)%2)+1;
+		$ elif (inp == 7) then $
+			grille7 <- ((i-1)%2)+1;
+		$ elif (inp == 8) then $
+			grille8 <- ((i-1)%2)+1;
+		$ elif (inp == 9) then $
+			grille9 <- ((i-1)%2)+1;
+		$;
+		
+		if ((grille1 == grille2) && (grille2 == grille3)) then $
+			winner <- grille1;
+		$ elif ((grille4 == grille5) && (grille5 == grille6)) then $
+			winner <- grille4;
+		$ elif ((grille7 == grille8) && (grille8 == grille9)) then $
+			winner <- grille7;
+		$ elif ((grille1 == grille4) && (grille4 == grille7)) then $
+			winner <- grille1;
+		$ elif ((grille2 == grille5) && (grille5 == grille8)) then $
+			winner <- grille2;
+		$ elif ((grille3 == grille6) && (grille6 == grille9)) then $
+			winner <- grille3;
+		$ elif ((grille1 == grille5) && (grille5 == grille9)) then $
+			winner <- grille1;
+		$ elif ((grille3 == grille5) && (grille5 == grille7)) then $
+			winner <- grille3;
+		$;
+
+		i <- i+1;
+	$;
+	
+	if (winner == 0) then $
+		print << nulle << endline;
+	$ else $
+		print << "Le joueur %d a gagné" << winner << endline;
+	$;
+$;
+
+define void printLine(integer grille1, integer grille2, integer grille3) $
+	String X <- "X ";
+	String O <- "O ";
+	String VIDE <- "- ";
+	
+	
+	if (grille1 == 2) then $
+		print << O;
+	$ elif (grille1 == 1) then $
+		print << X;
+	$ else $
+		print << VIDE;
+	$;
+		
+	if (grille2 == 2) then $
+		print << O;
+	$ elif (grille2 == 1) then $
+		print << X;
+	$ else $
+		print << VIDE;
+	$;
+		
+	if (grille3 == 2) then $
+		print << O << endline;
+	$ elif (grille3 == 1) then $
+		print << X << endline;
+	$ else $
+		print << VIDE << endline;
+	$;
+$;

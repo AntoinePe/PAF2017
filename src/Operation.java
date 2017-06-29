@@ -55,14 +55,6 @@ public class Operation {
 				return "idiv";
 			else if (op.equals("%"))
 				return "%idiv";
-			else if (op.equals("<<"))
-				return "sal";
-			else if (op.equals(">>"))
-				return "sar";
-			else if (op.equals("&"))
-				return "and";
-			else if (op.equals("|"))
-				return "or";
 			else
 				return "imul";
 		}
@@ -104,9 +96,6 @@ public class Operation {
 					s += "\tmov " + c + "," + returnVariable + "\n";
 					s += "\t" + this.opToAsm() + " " + c + "," + term.getReturnVariable() + "\n";
 					s += "\tmov " + returnVariable + "," + c + "\n";
-				} else if ((this.opToAsm().equals("sal") | this.opToAsm().equals("sar"))  && term.getReturnVariable().startsWith("[")) {
-					s += "\tmov " + c + "," + term.getReturnVariable() + "\n";
-					s += "\t" + this.opToAsm() + " " + returnVariable + "," + c.replace("e", "").replace('x', 'l') + "\n";
 				} else
 					s += "\t" + this.opToAsm() + " " + returnVariable + "," + term.getReturnVariable() + "\n";
 			}

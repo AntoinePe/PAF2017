@@ -75,6 +75,18 @@ public class PAFGrammarBaseListener implements PAFGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrintInstr(PAFGrammarParser.PrintInstrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintInstr(PAFGrammarParser.PrintInstrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOperation1(PAFGrammarParser.Operation1Context ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -7,9 +7,9 @@ public class Function {
 	private Instructions instructions;
 	private ArrayList<String> variables = new ArrayList<>(), lambdaFunctions = new ArrayList<>();
 	private HashMap<String,String> variablesString = new HashMap<>();
-	private String[] registersOfParameters = {"eax","ebx","ecx","edx","esi","edi","[esp+4]","[esp+8]","[esp+12]","[esp+16]","[esp+20]","[esp+24]","[esp+28]","[esp+32]"};
+	private String[] registersOfParameters = {"eax","ebx","ecx","edx","edi","[esp+4]","[esp+8]","[esp+12]","[esp+16]","[esp+20]","[esp+24]","[esp+28]","[esp+32]"};
 	private String[] registersOfParameters2 = {"[esp+32]","[esp+28]","[esp+24]","[esp+20]","[esp+16]","[esp+12]","[esp+8]","[esp+4]","edi","esi","edx","ecx","ebx","eax"};
-	private int indexOfParameter = -1, indexOfParameter2 = -1, indexOfParameterOfCalledFunctions = -1;
+	private int indexOfParameter = -1, indexOfParameter2 = -1, indexOfParameterOfCalledFunctions = -1, numberOfPrint = 0;
 	private Parameter2 param;
 	private boolean val = false;
 	
@@ -55,6 +55,11 @@ public class Function {
 	
 	public void is32(boolean val) {
 		this.val = val;
+	}
+	
+	public int updateNumberOfPrint() {
+		numberOfPrint++;
+		return numberOfPrint;
 	}
 	
 	public int updateIndex() {
@@ -121,16 +126,30 @@ public class Function {
 	public String toAsm() {
 		String s = "", c = "", d = "";
 		
+		int numberToAddToRegister = 16;
+		if (val)
+			numberToAddToRegister = 32;
+		
+		
 		if (param != null)
 			d += param.toAsm(this);
 		
 		d += instructions.toAsm(this);
 		
+		if (variables.size()*4 > 16 && variables.size()*4 <= 32)
+			numberToAddToRegister = 32;
+		
+		if (variables.size()*4 > 32 && variables.size()*4 <= 64)
+			numberToAddToRegister = 64;
+		
+		if (variables.size()*4 > 64 && variables.size()*4 <= 128)
+			numberToAddToRegister = 128;
+		
 		if (!name.equals("start"))
 			s += name + ":\n";
 		else
 			s += "start:\n";
-		s += "\tpush ebp\n\tmov ebp, esp\n\tsub esp," + (val ? 32 : 16) + "\n";
+		s += "\tpush ebp\n\tmov ebp, esp\n\tsub esp," + numberToAddToRegister + "\n";
 		
 		s += d;
 		
@@ -141,7 +160,7 @@ public class Function {
 		else
 			s += "\tmov eax,[ebp-" + this.getIdOfVariable(returnVariable) + "]\n";
 			
-		s += "\tadd esp," + (val ? 32 : 16) + "\n\tpop ebp\n";
+		s += "\tadd esp," + numberToAddToRegister+ "\n\tpop ebp\n";
 		if (name.equals("start"))
 			s += "\tmov eax,1\n\tmov ebx,0\n\tint 80h\n";
 		else 

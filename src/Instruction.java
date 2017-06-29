@@ -6,13 +6,16 @@ public class Instruction {
 	private While_loop whileLoop = null;
 	private Dowhile_loop doWhileLoop = null;
 	private Assigning var = null;
-	private Operation op = null;
 	private String result, variable;
-	private int newLine;
 	private CallFunction callFunction;
+	private Print printStr;
 	
 	public Instruction(CallFunction callFunction) {
 		this.callFunction = callFunction;
+	}
+
+	public Instruction(Print printStr) {
+		this.printStr = printStr;
 	}
 
 	public Instruction(String result, String variable) {
@@ -38,24 +41,6 @@ public class Instruction {
 
 	public Instruction(Assigning var) {
 		this.var = var;
-	}
-
-	public Instruction(Operation op, int newLine) {
-		this.op = op;
-		this.newLine = newLine;
-	}
-	
-	public String toString() {
-		if (cond != null)
-			return cond.toString();
-		else if (forLoop != null)
-			return forLoop.toString();
-		else if (whileLoop != null)
-			return whileLoop.toString();
-		else if (var != null) 
-			return var.toString();
-		else
-			return op.toString();
 	}
 	
 	public String toAsm(Function function) {
@@ -94,12 +79,7 @@ public class Instruction {
 			}
 			
 		} else {
-			s += op.toAsm(function,true);
-			c = op.getReturnVariable();
-			s += "\tpush " + (c.startsWith("[") ? "dword " : "") + c + "\n";
-			s += "\tpush dword " + ((c.startsWith(".") || c.startsWith(function.getName())) ? "stringMessage" : "intMessage") + (newLine == 1 ? "L" : "") + "\n";
-			s += "\tcall " + (PAFRunner.OS.indexOf("mac") >= 0 ? "_" : "") + "printf";
-			s += "\n\tadd esp,8\n";
+			s += printStr.toAsm(function);
 		}
 		return s;
 	}

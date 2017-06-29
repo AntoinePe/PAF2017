@@ -24,10 +24,15 @@ instruction returns [Instruction instr]:
 	| c=while_loop {$instr=new Instruction($c.whileLoop);}
 	| d=dowhile_loop {$instr=new Instruction($d.dowhileLoop);}
 	| e=assigning {$instr=new Instruction($e.var);}
-	| PRINT POPERATOR f=operation1 {$instr=new Instruction($f.op,0);}
-	| PRINT POPERATOR k=operation1 POPERATOR NEWLINE {$instr=new Instruction($k.op,1);}
+	| f=printInstr {$instr=new Instruction($f.msg);}
 	| SCAN SOPERATOR g=String SOPERATOR h=Variable {$instr=new Instruction($g.text,$h.text);}
 	| o=call_function {$instr=new Instruction($o.funcCall);};
+	
+printInstr returns [Print msg]:
+	PRINT POPERATOR c=String POPERATOR d=term {$msg=new Print($c.text,$d.tm,0);}
+	| PRINT POPERATOR c=String POPERATOR d=term POPERATOR ENDLINE  {$msg=new Print($c.text,$d.tm,1);}
+	| PRINT POPERATOR a=term {$msg=new Print($a.tm,0);}
+	| PRINT POPERATOR b=term POPERATOR ENDLINE {$msg=new Print($b.tm,1);};
 	
 operation1 returns [Operation op]:
 	a=operation2 {$op=$a.op;}
@@ -35,7 +40,7 @@ operation1 returns [Operation op]:
 	
 operation2 returns [Operation op]:
 	a=term {$op=new Operation($a.tm);}
-	| c=operation2 t=(TIMES | DIV | REM | POPERATOR | SOPERATOR | BAND | BOR) b=term {$op=new Operation($b.tm,$c.op,$t.text);};
+	| c=operation2 t=(TIMES | DIV | REM) b=term {$op=new Operation($b.tm,$c.op,$t.text);};
 	
 term returns [Term tm]:
 	lp=LP a=operation1 rp=RP {$tm=new Term($a.op,$lp.text,$rp.text);}
@@ -95,7 +100,7 @@ LP : '(';
 RP : ')';
 PRINT : 'print';
 SCAN : 'scan';
-NEWLINE : 'newline';
+ENDLINE : 'endline';
 POPERATOR : '<<';
 SOPERATOR : '>>';
 AOPERATOR : '<-';
@@ -109,8 +114,6 @@ FOR : 'for';
 THEN : 'then';
 AND : '&&';
 OR : '||';
-BAND : '&';
-BOR : '|';
 NOT : '!';
 END : ';';
 COMMA : ',';
@@ -130,7 +133,7 @@ DEFINE : 'define';
 RETURN : 'return';
 AUTO : 'auto';
 Variable : [A-Za-z][A-Za-z0-9]*;
-String : '"' ([A-Za-z0-9] | ' ' | ',' | ':' | '?' | '!' | ';' | '%' | '-' | '_' | 'é' | 'è')* '"';
+String : '"' ([A-Za-z0-9] | ' ' | '(' | ')' | '|' | ',' | ':' | '?' | '!' | ';' | '%' | '-' | '_' | 'é' | 'è' | 'à' | '\'')* '"';
 Number : [0-9]+;
 WS  :   ( ' '
         | '\t'
